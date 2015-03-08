@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/colDiaNum"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:text="D"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:background="@drawable/cell_shape"/>
+
+    <TextView
+        android:id="@+id/colDiaText"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:text="S"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:background="@drawable/cell_shape"/>
+
+    <TextView
+        android:id="@+id/colHora1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Hora1"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:background="@drawable/cell_shape"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/colHora2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Hora2"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:background="@drawable/cell_shape"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/colHora3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Hora3"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:background="@drawable/cell_shape"
+        android:layout_weight="1" />
+
+</LinearLayout>

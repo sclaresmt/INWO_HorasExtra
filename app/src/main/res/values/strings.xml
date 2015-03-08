@@ -4,5 +4,9 @@
     <string name="app_name">INWO_HorasExtra</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_calendario">Calendario</string>
+    <string name="mesSiguiente">Siguiente</string>
+    <string name="mesAnterior">Aterior</string>
+    <string name="horasAcumuladas">Horas Acumuladas</string>
 
 </resources>

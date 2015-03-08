@@ -5,4 +5,66 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+        <style name="Theme.Temah" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+            <item name="actionBarItemBackground">@drawable/selectable_background_temah</item>
+            <item name="popupMenuStyle">@style/PopupMenu.Temah</item>
+            <item name="dropDownListViewStyle">@style/DropDownListView.Temah</item>
+            <item name="actionBarTabStyle">@style/ActionBarTabStyle.Temah</item>
+            <item name="actionDropDownStyle">@style/DropDownNav.Temah</item>
+            <item name="actionBarStyle">@style/ActionBar.Solid.Temah</item>
+            <item name="actionModeBackground">@drawable/cab_background_top_temah</item>
+            <item name="actionModeSplitBackground">@drawable/cab_background_bottom_temah</item>
+            <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Temah</item>
+
+            <!-- Light.DarkActionBar specific -->
+            <item name="actionBarWidgetTheme">@style/Theme.Temah.Widget</item>
+
+        </style>
+
+        <style name="ActionBar.Solid.Temah" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+            <item name="background">@drawable/ab_solid_temah</item>
+            <item name="backgroundStacked">@drawable/ab_stacked_solid_temah</item>
+            <item name="backgroundSplit">@drawable/ab_bottom_solid_temah</item>
+            <item name="progressBarStyle">@style/ProgressBar.Temah</item>
+        </style>
+
+        <style name="ActionBar.Transparent.Temah" parent="@style/Widget.AppCompat.ActionBar">
+            <item name="background">@drawable/ab_transparent_temah</item>
+            <item name="progressBarStyle">@style/ProgressBar.Temah</item>
+        </style>
+
+        <style name="PopupMenu.Temah" parent="@style/Widget.AppCompat.PopupMenu">
+            <item name="android:popupBackground">@drawable/menu_dropdown_panel_temah</item>
+        </style>
+
+        <style name="DropDownListView.Temah" parent="@style/Widget.AppCompat.ListView.DropDown">
+            <item name="android:listSelector">@drawable/selectable_background_temah</item>
+        </style>
+
+        <style name="ActionBarTabStyle.Temah" parent="@style/Widget.AppCompat.ActionBar.TabView">
+            <item name="android:background">@drawable/tab_indicator_ab_temah</item>
+        </style>
+
+        <style name="DropDownNav.Temah" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
+            <item name="android:background">@drawable/spinner_background_ab_temah</item>
+            <item name="android:popupBackground">@drawable/menu_dropdown_panel_temah</item>
+            <item name="android:dropDownSelector">@drawable/selectable_background_temah</item>
+        </style>
+
+        <style name="ProgressBar.Temah" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+            <item name="android:progressDrawable">@drawable/progress_horizontal_temah</item>
+        </style>
+
+        <style name="ActionButton.CloseMode.Temah" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
+            <item name="android:background">@drawable/btn_cab_done_temah</item>
+        </style>
+
+        <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+        <style name="Theme.Temah.Widget" parent="@style/Theme.AppCompat">
+            <item name="popupMenuStyle">@style/PopupMenu.Temah</item>
+            <item name="dropDownListViewStyle">@style/DropDownListView.Temah</item>
+        </style>
+
+
 </resources>
