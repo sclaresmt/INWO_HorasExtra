@@ -18,7 +18,7 @@
         android:id="@+id/etRecogeHorasAcumuladas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:inputType="numberSigned|numberDecimal"
         android:background="@color/blanco">
 
         <requestFocus />

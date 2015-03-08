@@ -35,17 +35,12 @@ Context c;
 //Preferencias
 SharedPreferences prefs;
 TextView tvHorasAcumuladas;
+private ArrayList<Dia> arLiDia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Instancia las preferencias.
-        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
-
-        tvHorasAcumuladas = (TextView) findViewById(R.id.horasAcumuladasResultado);
-        tvHorasAcumuladas.setText(prefs.getString("horasAcumuladas", "0"));
 
         //Contexto.
         c=this;
@@ -63,9 +58,7 @@ TextView tvHorasAcumuladas;
         strDiaDeLaSemana=null;
 
 
-        ArrayList<Dia> arLiDia = new ArrayList<Dia>();
-
-        arLiDia.add(new Dia("D", "S", "Horas Trab.", "art.13 Rec.", "art.54."));
+       arLiDia = new ArrayList<Dia>();
 
         for(int i = 1; i<totalDiasMes+1; i++){
 
@@ -95,18 +88,18 @@ TextView tvHorasAcumuladas;
                     break;
             }
 
-            Random r = new Random();
-            int i1 = r.nextInt(8);
+//            Random r = new Random();
+//            int i1 = r.nextInt(8);
 
             // llena el ArrayList arLiDia con los dias de el mes correspondiente.
-            arLiDia.add(new Dia(Integer.toString(i), strDiaDeLaSemana, Integer.toString(i1), "", ""));
+            arLiDia.add(new Dia(Integer.toString(i), strDiaDeLaSemana, Integer.toString(1), Integer.toString(2), ""));
         }
 
 //        TextView tvHora1 = (TextView) findViewById(R.id.tvTotalHora1);
         int sumaHoras=0;
-        for(int h=1; h<totalDiasMes+1; h++){
-            sumaHoras=sumaHoras+Integer.parseInt(arLiDia.get(h).getHoraNormal());
-        }
+//        for(int h=0; h<totalDiasMes; h++){
+//            sumaHoras=sumaHoras+Integer.parseInt(arLiDia.get(h).getHoraNormal());
+//        }
 //
 //        tvHora1.setText(Integer.toString(sumaHoras));
 
@@ -180,6 +173,14 @@ TextView tvHorasAcumuladas;
 
         lista.setBackgroundResource(R.drawable.cell_shape);
 
+//        Setea la horas a 0. Por si peta.
+//        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString("horasAcumuladas", "0");
+//        editor.commit();
+
+        horasAcumuladas();
+
     }
 
 
@@ -212,6 +213,31 @@ TextView tvHorasAcumuladas;
         return super.onOptionsItemSelected(item);
     }
 
+    //Nos da el total de horas acumuladas.
+    public void horasAcumuladas(){
+        //Instancia las preferencias.
+        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
+
+        tvHorasAcumuladas = (TextView) findViewById(R.id.horasAcumuladasResultado);
+        Double totalHoras = 0.0;
+        Double hNorm, hExt, d=0.0;
+
+
+        for(int i =0; i<arLiDia.size();i++){
+            hNorm= Double.parseDouble(arLiDia.get(i).getHoraNormal());
+            hExt= Double.parseDouble(arLiDia.get(i).getHoraExtra());
+            totalHoras=totalHoras+hNorm-hExt;
+        }
+
+        //Recoge las horas guardadas en las preferencias.
+        d=Double.parseDouble(prefs.getString("horasAcumuladas", "0"));
+        //Operacion que devuelve el total de horas.
+        totalHoras=totalHoras+d;
+
+        tvHorasAcumuladas.setText(Double.toString(totalHoras));
+
+    }
+
 
     //Dialog que sirve para introducir las horas acumuladas
     public void dialogoHorasAcumuladas(){
@@ -235,6 +261,7 @@ TextView tvHorasAcumuladas;
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("horasAcumuladas", sAcumuladas);
                         editor.commit();
+                        horasAcumuladas();
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

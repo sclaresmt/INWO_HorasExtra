@@ -9,4 +9,9 @@
     <string name="mesAnterior">Aterior</string>
     <string name="horasAcumuladas">H.Acumuladas</string>
 
+    <string-array name="arSignos">
+        <item>+</item>
+        <item>-</item>
+    </string-array>
+
 </resources>
