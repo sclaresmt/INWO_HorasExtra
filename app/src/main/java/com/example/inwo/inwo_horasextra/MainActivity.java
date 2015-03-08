@@ -1,14 +1,21 @@
 package com.example.inwo.inwo_horasextra;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +31,24 @@ int diaDeLaSemana;
 String strDiaDeLaSemana;
 ListView lista;
 int totalDiasMes;
+Context c;
+//Preferencias
+SharedPreferences prefs;
+TextView tvHorasAcumuladas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Instancia las preferencias.
+        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
+
+        tvHorasAcumuladas = (TextView) findViewById(R.id.horasAcumuladasResultado);
+        tvHorasAcumuladas.setText(prefs.getString("horasAcumuladas", "0"));
+
+        //Contexto.
+        c=this;
 
         Calendar calendario = Calendar.getInstance();
 
@@ -118,7 +138,6 @@ int totalDiasMes;
                     if (tvHora3 != null)
                         tvHora3.setText(((Dia) entrada).getHoraArt54());
 
-
 //                    tvDiaNum.setTextSize(tamanioFuente);
 
                     // color de las filas
@@ -186,7 +205,47 @@ int totalDiasMes;
             Intent intentCalendario = new Intent(this, Calendario.class);
             startActivity(intentCalendario);
         }
+        if(id==R.id.hAcumuladas_action_bar){
+            dialogoHorasAcumuladas();
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //Dialog que sirve para introducir las horas acumuladas
+    public void dialogoHorasAcumuladas(){
+        //Se infla con el xml referente al dialog
+        LayoutInflater li = LayoutInflater.from(this);
+        final View prompt = li.inflate(R.layout.dialog_horas_acumuladas, null);
+
+        //Instanciamos el dialog.
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(prompt);
+
+        // Mostramos el mensaje del cuadro de dialogo
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // Rescatamos el nombre del EditText y lo mostramos por pantalla
+                        EditText etAcumuladas = (EditText) prompt.findViewById(R.id.etRecogeHorasAcumuladas);
+                        String sAcumuladas = etAcumuladas.getText().toString();
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("horasAcumuladas", sAcumuladas);
+                        editor.commit();
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // Cancelamos el cuadro de dialogo
+                        dialog.cancel();
+                    }
+                });
+
+        // Creamos un AlertDialog y lo mostramos
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

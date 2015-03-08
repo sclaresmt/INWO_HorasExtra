@@ -7,12 +7,20 @@
     <item android:id="@+id/calendario_action_bar"
         android:icon="@drawable/calendario_icon"
         app:showAsAction="always"
-        android:title="Calendario" />
+        android:title="Calendario"/>
 
     <item android:id="@+id/settings_action_bar"
         android:icon="@drawable/settings_icon"
         app:showAsAction="always"
-        android:title="Settings" />
+        android:title="Settings">
+        <menu>
+            <item android:id="@+id/hAcumuladas_action_bar"
+                android:icon="@drawable/settings_icon"
+                app:showAsAction="always"
+                android:title="H.Acumuladas" />
+        </menu>
+
+    </item>
 
 
 </menu>

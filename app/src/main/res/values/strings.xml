@@ -7,6 +7,6 @@
     <string name="title_activity_calendario">Calendario</string>
     <string name="mesSiguiente">Siguiente</string>
     <string name="mesAnterior">Aterior</string>
-    <string name="horasAcumuladas">Horas Acumuladas</string>
+    <string name="horasAcumuladas">H.Acumuladas</string>
 
 </resources>
