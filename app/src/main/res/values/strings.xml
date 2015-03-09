@@ -8,10 +8,12 @@
     <string name="mesSiguiente">Siguiente</string>
     <string name="mesAnterior">Aterior</string>
     <string name="horasAcumuladas">H.Acumuladas</string>
+    <string name="horasNormales">H.Normales</string>
+    <string name="horasExtra">H.Extra</string>
+    <string name="horasArt54">H.Art54</string>
+    <string name="guardarHoras">Guardar Horas</string>
 
-    <string-array name="arSignos">
-        <item>+</item>
-        <item>-</item>
-    </string-array>
+
+    <string name="title_activity_actualizar_horas">ActualizarHoras</string>
 
 </resources>

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,34 +26,76 @@ import java.util.Calendar;
 import java.util.Random;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-int diaDeLaSemana;
-String strDiaDeLaSemana;
-ListView lista;
-int totalDiasMes;
-Context c;
-//Preferencias
-SharedPreferences prefs;
-TextView tvHorasAcumuladas;
-private ArrayList<Dia> arLiDia;
+    int diaDeLaSemana;
+    String strDiaDeLaSemana;
+    ListView lista;
+    int totalDiasMes;
+    Context c;
+    //Preferencias
+    SharedPreferences prefs;
+    TextView tvHorasAcumuladas;
+    private ArrayList<Dia> arLiDia;
+    private int mes;
+    private String strMes;
+    Button btnMesAnterior, btnMesSiguiente;
+    Calendar calendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnMesAnterior= (Button) findViewById(R.id.btnMesAnterior);
+        btnMesSiguiente= (Button) findViewById(R.id.btnMesSiguiente);
+        btnMesAnterior.setOnClickListener(this);
+        btnMesSiguiente.setOnClickListener(this);
+
         //Contexto.
         c=this;
 
-        Calendar calendario = Calendar.getInstance();
+       calendario = Calendar.getInstance();
 
         //Mes siguiente.
 //        calendario.add(Calendar.MONTH, 1);
         diaDeLaSemana=calendario.get(Calendar.DAY_OF_WEEK);
 
+        //Recoge el mes y lo gestiona.
+        mes=calendario.get(Calendar.MONTH);
 
-        totalDiasMes = calendario.getActualMaximum(Calendar.DAY_OF_MONTH);
+        Log.d("log1", Integer.toString(mes));
+        switch (mes){
+            case 0: strMes="Enero";
+                break;
+            case 1: strMes="Febrero";
+                break;
+            case 2: strMes="Marzo";
+                break;
+            case 3: strMes="Abril";
+                break;
+            case 4: strMes="Mayo";
+                break;
+            case 5: strMes="Junio";
+                break;
+            case 6: strMes="Julio";
+                break;
+            case 7: strMes="Agosto";
+                break;
+            case 8: strMes="Septiembre";
+                break;
+            case 9: strMes="Octubre";
+                break;
+            case 10: strMes="Noviembre";
+                break;
+            case 11: strMes="Diciembre";
+                break;
+        }
+        TextView tvMes= (TextView) findViewById(R.id.tvMes);
+        tvMes.setText(strMes);
+
+
+
 
         // proporciona el string segun el dia de la semana en que estemos
         strDiaDeLaSemana=null;
@@ -60,16 +103,52 @@ private ArrayList<Dia> arLiDia;
 
        arLiDia = new ArrayList<Dia>();
 
-        for(int i = 1; i<totalDiasMes+1; i++){
+       cargaMes();
 
-            // dispone los dias de la semana
-            if(diaDeLaSemana==7)
-            {
-                diaDeLaSemana=1;
-            }else
-            {
-                diaDeLaSemana++;
-            }
+//        Setea la horas a 0. Por si peta.
+//        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString("horasAcumuladas", "0");
+//        editor.commit();
+
+        horasAcumuladas();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id==R.id.calendario_action_bar){
+            Intent intentCalendario = new Intent(this, Calendario.class);
+            startActivity(intentCalendario);
+        }
+        if(id==R.id.hAcumuladas_action_bar){
+            dialogoHorasAcumuladas();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void cargaMes(){
+
+        totalDiasMes = calendario.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        for(int i = 1; i<totalDiasMes+1; i++){
 
             switch (diaDeLaSemana){
                 case 1: strDiaDeLaSemana="D";
@@ -88,20 +167,18 @@ private ArrayList<Dia> arLiDia;
                     break;
             }
 
-//            Random r = new Random();
-//            int i1 = r.nextInt(8);
+            // dispone los dias de la semana
+            if(diaDeLaSemana==7)
+            {
+                diaDeLaSemana=1;
+            }else
+            {
+                diaDeLaSemana++;
+            }
 
             // llena el ArrayList arLiDia con los dias de el mes correspondiente.
-            arLiDia.add(new Dia(Integer.toString(i), strDiaDeLaSemana, Integer.toString(1), Integer.toString(2), ""));
+            arLiDia.add(new Dia(Integer.toString(i), strDiaDeLaSemana, Integer.toString(1), Integer.toString(2), "0"));
         }
-
-//        TextView tvHora1 = (TextView) findViewById(R.id.tvTotalHora1);
-        int sumaHoras=0;
-//        for(int h=0; h<totalDiasMes; h++){
-//            sumaHoras=sumaHoras+Integer.parseInt(arLiDia.get(h).getHoraNormal());
-//        }
-//
-//        tvHora1.setText(Integer.toString(sumaHoras));
 
 
         lista = (ListView) findViewById(R.id.listaDias);
@@ -167,50 +244,15 @@ private ArrayList<Dia> arLiDia;
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), "Pulsaste:" + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "Pulsaste:" + position, Toast.LENGTH_SHORT).show();
+                Intent intentHoras = new Intent(c, ActualizarHoras.class);
+                startActivityForResult(intentHoras, 1);
+
+
             }
         });
 
         lista.setBackgroundResource(R.drawable.cell_shape);
-
-//        Setea la horas a 0. Por si peta.
-//        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.putString("horasAcumuladas", "0");
-//        editor.commit();
-
-        horasAcumuladas();
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if(id==R.id.calendario_action_bar){
-            Intent intentCalendario = new Intent(this, Calendario.class);
-            startActivity(intentCalendario);
-        }
-        if(id==R.id.hAcumuladas_action_bar){
-            dialogoHorasAcumuladas();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     //Nos da el total de horas acumuladas.
@@ -253,19 +295,24 @@ private ArrayList<Dia> arLiDia;
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                    public void onClick(DialogInterface dialog, int id) {
                         // Rescatamos el nombre del EditText y lo mostramos por pantalla
                         EditText etAcumuladas = (EditText) prompt.findViewById(R.id.etRecogeHorasAcumuladas);
                         String sAcumuladas = etAcumuladas.getText().toString();
 
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("horasAcumuladas", sAcumuladas);
+                        if (sAcumuladas.equals("")) {
+                            sAcumuladas = "0";
+                        } else {
+                            editor.putString("horasAcumuladas", sAcumuladas);
+                        }
+
                         editor.commit();
                         horasAcumuladas();
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                    public void onClick(DialogInterface dialog, int id) {
                         // Cancelamos el cuadro de dialogo
                         dialog.cancel();
                     }
@@ -274,5 +321,19 @@ private ArrayList<Dia> arLiDia;
         // Creamos un AlertDialog y lo mostramos
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v==btnMesAnterior){
+            mes=mes-1;
+            arLiDia.clear();
+            cargaMes();
+        }
+        if(v==btnMesSiguiente){
+            mes=mes+1;
+            arLiDia.clear();
+            cargaMes();
+        }
     }
 }

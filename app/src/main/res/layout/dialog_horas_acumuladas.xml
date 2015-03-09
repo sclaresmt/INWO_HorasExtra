@@ -10,16 +10,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Introduce tus horas acumuladas:"
-        android:textSize="22sp"
-        android:textColor="@color/blanco"/>
+        android:text="Horas acumuladas:"
+        android:textSize="20dp"
+        android:textColor="@color/blanco"
+        android:layout_margin="5dp"
+        android:layout_gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/etRecogeHorasAcumuladas"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:inputType="numberSigned|numberDecimal"
-        android:background="@color/blanco">
+        android:background="@color/blanco"
+        android:textSize="20dp"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal">
 
         <requestFocus />
     </EditText>

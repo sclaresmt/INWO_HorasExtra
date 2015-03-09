@@ -20,6 +20,10 @@
             android:name=".Calendario"
             android:label="@string/title_activity_calendario" >
         </activity>
+        <activity
+            android:name=".ActualizarHoras"
+            android:label="@string/title_activity_actualizar_horas" >
+        </activity>
     </application>
 
 </manifest>
