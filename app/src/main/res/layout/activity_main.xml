@@ -56,7 +56,8 @@
             android:gravity="center"
             android:background="@drawable/cell_shape"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            android:textColor="@color/blanco" />
 
         <TextView
             android:id="@+id/colHora1Main"
@@ -68,7 +69,8 @@
             android:background="@drawable/cell_shape"
             android:layout_weight="1"
             android:paddingBottom="5dp"
-            android:paddingTop="5dp" />
+            android:paddingTop="5dp"
+            android:textColor="@color/blanco" />
 
         <TextView
             android:id="@+id/colHora2Main"
@@ -80,7 +82,8 @@
             android:background="@drawable/cell_shape"
             android:layout_weight="1"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            android:textColor="@color/blanco" />
 
         <TextView
             android:id="@+id/colHora3Main"
@@ -92,7 +95,8 @@
             android:background="@drawable/cell_shape"
             android:layout_weight="1"
             android:paddingBottom="5dp"
-            android:paddingTop="5dp" />
+            android:paddingTop="5dp"
+            android:textColor="@color/blanco" />
 
     </LinearLayout>
 

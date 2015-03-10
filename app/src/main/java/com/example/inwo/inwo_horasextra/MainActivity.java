@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //Preferencias
     SharedPreferences prefs;
     TextView tvHorasAcumuladas;
+    TextView tvMes;
     private ArrayList<Dia> arLiDia;
     private int mes;
     private String strMes;
@@ -64,38 +65,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //Recoge el mes y lo gestiona.
         mes=calendario.get(Calendar.MONTH);
 
-        Log.d("log1", Integer.toString(mes));
-        switch (mes){
-            case 0: strMes="Enero";
-                break;
-            case 1: strMes="Febrero";
-                break;
-            case 2: strMes="Marzo";
-                break;
-            case 3: strMes="Abril";
-                break;
-            case 4: strMes="Mayo";
-                break;
-            case 5: strMes="Junio";
-                break;
-            case 6: strMes="Julio";
-                break;
-            case 7: strMes="Agosto";
-                break;
-            case 8: strMes="Septiembre";
-                break;
-            case 9: strMes="Octubre";
-                break;
-            case 10: strMes="Noviembre";
-                break;
-            case 11: strMes="Diciembre";
-                break;
-        }
-        TextView tvMes= (TextView) findViewById(R.id.tvMes);
-        tvMes.setText(strMes);
-
-
-
 
         // proporciona el string segun el dia de la semana en que estemos
         strDiaDeLaSemana=null;
@@ -113,6 +82,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         horasAcumuladas();
 
+        String d = Integer.toString(calendario.get(Calendar.DAY_OF_WEEK));
+        String m = Integer.toString(calendario.get(Calendar.DAY_OF_WEEK));
+        String a = Integer.toString(calendario.get(Calendar.DAY_OF_WEEK));
+
+//        Log.d("log1", "fecha: "+fecha));
     }
 
     @Override
@@ -144,7 +118,37 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    //Se ocupa de gestionar la carga de los meses.
     public void cargaMes(){
+
+        switch (mes){
+            case 0: strMes="Enero";
+                break;
+            case 1: strMes="Febrero";
+                break;
+            case 2: strMes="Marzo";
+                break;
+            case 3: strMes="Abril";
+                break;
+            case 4: strMes="Mayo";
+                break;
+            case 5: strMes="Junio";
+                break;
+            case 6: strMes="Julio";
+                break;
+            case 7: strMes="Agosto";
+                break;
+            case 8: strMes="Septiembre";
+                break;
+            case 9: strMes="Octubre";
+                break;
+            case 10: strMes="Noviembre";
+                break;
+            case 11: strMes="Diciembre";
+                break;
+        }
+        tvMes= (TextView) findViewById(R.id.tvMes);
+        tvMes.setText(strMes);
 
         totalDiasMes = calendario.getActualMaximum(Calendar.DAY_OF_MONTH);
 
@@ -211,7 +215,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                    tvDiaNum.setTextSize(tamanioFuente);
 
                     // color de las filas
-                    Log.d("log1", ((Dia) entrada).getDiaNum());
                     if(((Dia) entrada).getDiaText()=="D")
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
@@ -326,12 +329,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v==btnMesAnterior){
-            mes=mes-1;
+            if(mes==0)
+            {
+                mes=11;
+            }else
+            {
+                mes=mes-1;
+            }
             arLiDia.clear();
             cargaMes();
         }
         if(v==btnMesSiguiente){
-            mes=mes+1;
+            if(mes==11)
+            {
+                mes=0;
+            }else{
+                mes=mes+1;
+            }
             arLiDia.clear();
             cargaMes();
         }
