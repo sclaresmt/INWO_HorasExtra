@@ -46,10 +46,11 @@ public class GestorBD extends SQLiteOpenHelper {
                 "fechaDia DATE PRIMARY KEY,"+
                 "horasNormales DECIMAL,"+
                 "horasExtra DECIMAL,"+
+                "horasArt54 DECIMAL,"+
                 "esVacaciones TINYINT,"+
                 "esFestivo TINYINT,"+
                 "esArticulo54 TINYINT"+
-	            //tipoDia INTEGER
+	            "tipoDia INTEGER"+
                 ");");
     }
 
@@ -65,7 +66,7 @@ public class GestorBD extends SQLiteOpenHelper {
     }
 
     /**
-     * Inserta los días de un año en la BD interna.
+     * Inserta los días de un ContentValues en la BD interna.
      * @param cv Los valores (días de un mes) a introducir en la BD.
      */
     public void insertarDias(ContentValues cv){
@@ -81,7 +82,7 @@ public class GestorBD extends SQLiteOpenHelper {
     public Cursor obtenerDias(String fecha){
         String [] columnas = {"fechaDia", "horasNormales", "horasExtra", "esVacaciones", "esFestivo", "esArticulo54"};
         String [] mesYAño = fecha.split("-");
-        String [] parametro = {mesYAño[0]+mesYAño[1]+"%"};
+        String [] parametro = {"__-"+mesYAño[1]+"-"+mesYAño[2]};
         SQLiteDatabase bdInterna = this.getReadableDatabase();
         Cursor cursor = bdInterna.query("dias", columnas, null, null, null, null, "fechaDia LIKE ", null);
         return cursor;
