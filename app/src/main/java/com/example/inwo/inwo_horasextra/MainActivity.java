@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
@@ -82,11 +83,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         horasAcumuladas();
 
-        String d = Integer.toString(calendario.get(Calendar.DAY_OF_WEEK));
-        String m = Integer.toString(calendario.get(Calendar.DAY_OF_WEEK));
-        String a = Integer.toString(calendario.get(Calendar.DAY_OF_WEEK));
-
-//        Log.d("log1", "fecha: "+fecha));
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(calendario.getTime());
+        Log.d("log1", "fecha: "+formattedDate);
+        calendario.add(Calendar.DAY_OF_YEAR, -36);
+        formattedDate = df.format(calendario.getTime());
+        Log.d("log1", "fecha: "+formattedDate);
     }
 
     @Override
