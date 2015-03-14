@@ -50,7 +50,7 @@ public class GestorBD extends SQLiteOpenHelper {
                 "esVacaciones TINYINT,"+
                 "esFestivo TINYINT,"+
                 "esArticulo54 TINYINT"+
-	            "tipoDia INTEGER"+
+//	            "tipoDia INTEGER"+
                 ");");
     }
 

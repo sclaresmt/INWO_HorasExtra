@@ -1,10 +1,12 @@
 package com.example.inwo.inwo_horasextra;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -24,71 +26,67 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-    int diaDeLaSemana;
-    String strDiaDeLaSemana;
-    ListView lista;
-    int totalDiasMes;
-    Context c;
-    //Preferencias
-    SharedPreferences prefs;
-    TextView tvHorasAcumuladas;
-    TextView tvMes;
-    private ArrayList<Dia> arLiDia;
+    private ArrayList<Dia> arLiDia; //Almacena todos los dias del año
+    private int diaDeLaSemana; //Dia de la semana en el que estamos
+    private String strDiaDeLaSemana; //String del dia de la semana
+    private ListView lista; //Lista para mostrar
+    private int totalDiasMes; //Numero de dias que tiene el mes
+    private Context contexto;
+    private SharedPreferences prefs; //Preferencias
+    private TextView tvHorasAcumuladas;
+    private TextView tvMes;
     private int mes;
-    private String strMes;
-    Button btnMesAnterior, btnMesSiguiente;
-    Calendar calendario;
+    private int anio;
+    private String strMes; //String del mes
+    private Button btnMesAnterior, btnMesSiguiente;
+    Calendar calendario, calendario2; //Calendario
+    GestorBD gestor; //Gestor de la SQLite
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Instancia el ArrayList arliDia
+        arLiDia = new ArrayList<Dia>();
+
+        //Instancia los botones de cambio de mes
         btnMesAnterior= (Button) findViewById(R.id.btnMesAnterior);
         btnMesSiguiente= (Button) findViewById(R.id.btnMesSiguiente);
         btnMesAnterior.setOnClickListener(this);
         btnMesSiguiente.setOnClickListener(this);
 
         //Contexto.
-        c=this;
+        contexto=this;
 
+        //Instancia el gestor
+        gestor = gestor.getInstancia(contexto);
+
+       //Instancia el calendario
        calendario = Calendar.getInstance();
-
-        //Mes siguiente.
-//        calendario.add(Calendar.MONTH, 1);
-        diaDeLaSemana=calendario.get(Calendar.DAY_OF_WEEK);
-
-        //Recoge el mes y lo gestiona.
-        mes=calendario.get(Calendar.MONTH);
-
+       calendario2 = Calendar.getInstance();
 
         // proporciona el string segun el dia de la semana en que estemos
         strDiaDeLaSemana=null;
 
+        //Instancia del mes
+        mes=calendario.get(Calendar.MONTH);
+        anio=calendario.get(Calendar.YEAR);
 
-       arLiDia = new ArrayList<Dia>();
+        Log.d("log1", "Mes y año: "+mes+" "+anio);
+
+
+       guardarAnio();
 
        cargaMes();
 
-//        Setea la horas a 0. Por si peta.
-//        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.putString("horasAcumuladas", "0");
-//        editor.commit();
-
         horasAcumuladas();
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String formattedDate = df.format(calendario.getTime());
-        Log.d("log1", "fecha: "+formattedDate);
-        calendario.add(Calendar.DAY_OF_YEAR, -36);
-        formattedDate = df.format(calendario.getTime());
-        Log.d("log1", "fecha: "+formattedDate);
     }
 
     @Override
@@ -123,69 +121,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //Se ocupa de gestionar la carga de los meses.
     public void cargaMes(){
 
-        switch (mes){
-            case 0: strMes="Enero";
-                break;
-            case 1: strMes="Febrero";
-                break;
-            case 2: strMes="Marzo";
-                break;
-            case 3: strMes="Abril";
-                break;
-            case 4: strMes="Mayo";
-                break;
-            case 5: strMes="Junio";
-                break;
-            case 6: strMes="Julio";
-                break;
-            case 7: strMes="Agosto";
-                break;
-            case 8: strMes="Septiembre";
-                break;
-            case 9: strMes="Octubre";
-                break;
-            case 10: strMes="Noviembre";
-                break;
-            case 11: strMes="Diciembre";
-                break;
-        }
-        tvMes= (TextView) findViewById(R.id.tvMes);
-        tvMes.setText(strMes);
+        SimpleDateFormat df3 = new SimpleDateFormat("dd-mm-yyyy");
+        String formattedDate3 = df3.format(calendario.getTime());
 
-        totalDiasMes = calendario.getActualMaximum(Calendar.DAY_OF_MONTH);
+//        Cursor miCursor = gestor.obtenerDias(formattedDate3);
+//        miCursor.moveToFirst();
+//        Log.d("log1", "Cursor: "+miCursor.getColumnIndexOrThrow("fechaDia"));
 
-        for(int i = 1; i<totalDiasMes+1; i++){
 
-            switch (diaDeLaSemana){
-                case 1: strDiaDeLaSemana="D";
-                    break;
-                case 2: strDiaDeLaSemana="L";
-                    break;
-                case 3: strDiaDeLaSemana="M";
-                    break;
-                case 4: strDiaDeLaSemana="MI";
-                    break;
-                case 5: strDiaDeLaSemana="J";
-                    break;
-                case 6: strDiaDeLaSemana="V";
-                    break;
-                case 7: strDiaDeLaSemana="S";
-                    break;
-            }
-
-            // dispone los dias de la semana
-            if(diaDeLaSemana==7)
-            {
-                diaDeLaSemana=1;
-            }else
-            {
-                diaDeLaSemana++;
-            }
-
-            // llena el ArrayList arLiDia con los dias de el mes correspondiente.
-            arLiDia.add(new Dia(Integer.toString(i), strDiaDeLaSemana, Integer.toString(1), Integer.toString(2), "0"));
-        }
-
+//        for(int i = 0; i<calendario.getActualMaximum(Calendar.MONTH); i++ ){
+//
+//
+//        }
 
         lista = (ListView) findViewById(R.id.listaDias);
 
@@ -249,8 +196,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(view.getContext(), "Pulsaste:" + position, Toast.LENGTH_SHORT).show();
-                Intent intentHoras = new Intent(c, ActualizarHoras.class);
+//              Toast.makeText(view.getContext(), "Pulsaste:" + position, Toast.LENGTH_SHORT).show();
+                Intent intentHoras = new Intent(contexto, ActualizarHoras.class);
                 startActivityForResult(intentHoras, 1);
 
 
@@ -330,26 +277,142 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v==btnMesAnterior){
-            if(mes==0)
-            {
-                mes=11;
-            }else
-            {
-                mes=mes-1;
-            }
-            arLiDia.clear();
-            cargaMes();
+//        if(v==btnMesAnterior){
+//            if(mes==0)
+//            {
+//                mes=11;
+//            }else
+//            {
+//                mes=mes-1;
+//            }
+////            arLiDia.clear();
+//            cargaMes();
+//        }
+//        if(v==btnMesSiguiente){
+//            if(mes==11)
+//            {
+//                mes=0;
+//            }else{
+//                mes=mes+1;
+//            }
+////            arLiDia.clear();
+//            cargaMes();
+//        }
+    }
+
+    //Guarda el año la BD.
+    public void guardarAnio(){
+
+        //Recoge el mes y lo gestiona.
+        int anio = calendario.get(Calendar.YEAR);
+        calendario.set(anio, Calendar.JANUARY, 1);
+
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-mm-yyyy");
+        String formattedDate2 = df2.format(calendario.getTime());
+
+        Log.d("log1", "fecha: "+formattedDate2);
+
+        switch (mes){
+            case 0: strMes="Enero";
+                break;
+            case 1: strMes="Febrero";
+                break;
+            case 2: strMes="Marzo";
+                break;
+            case 3: strMes="Abril";
+                break;
+            case 4: strMes="Mayo";
+                break;
+            case 5: strMes="Junio";
+                break;
+            case 6: strMes="Julio";
+                break;
+            case 7: strMes="Agosto";
+                break;
+            case 8: strMes="Septiembre";
+                break;
+            case 9: strMes="Octubre";
+                break;
+            case 10: strMes="Noviembre";
+                break;
+            case 11: strMes="Diciembre";
+                break;
         }
-        if(v==btnMesSiguiente){
-            if(mes==11)
-            {
-                mes=0;
-            }else{
-                mes=mes+1;
+        tvMes= (TextView) findViewById(R.id.tvMes);
+        tvMes.setText(strMes);
+
+        //Obtiene el total de dias de ese año.
+        int totalDiasAnio=0;
+        calendario2.set(anio, Calendar.JANUARY, 1);
+        for(int d = 0; d<12; d++){
+            calendario2.add(Calendar.MONTH, d);
+            totalDiasAnio=totalDiasAnio+calendario2.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+        totalDiasAnio-=1;
+
+
+        Log.d("log1", "Dias totales año: "+Integer.toString(totalDiasAnio));
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy"); //Formato de la fecha
+        String formattedDate;
+        calendario.set(anio, Calendar.JANUARY, 1); //Setea en calendario a 1 de Enero de este año
+
+        for(int i = 0; i<totalDiasAnio; i++){
+
+            // add one day to the date/calendar
+            calendario.add(Calendar.DAY_OF_YEAR, i);
+            formattedDate = df.format(calendario.getTime());
+            diaDeLaSemana=calendario.get(Calendar.DAY_OF_WEEK);
+
+            switch (diaDeLaSemana){
+                case 1: strDiaDeLaSemana="D";
+                    break;
+                case 2: strDiaDeLaSemana="L";
+                    break;
+                case 3: strDiaDeLaSemana="M";
+                    break;
+                case 4: strDiaDeLaSemana="MI";
+                    break;
+                case 5: strDiaDeLaSemana="J";
+                    break;
+                case 6: strDiaDeLaSemana="V";
+                    break;
+                case 7: strDiaDeLaSemana="S";
+                    break;
             }
-            arLiDia.clear();
-            cargaMes();
+
+            // dispone los dias de la semana
+//            if(diaDeLaSemana==7)
+//            {
+//                diaDeLaSemana=1;
+//            }else
+//            {
+//                diaDeLaSemana++;
+//            }
+
+//            Log.d("log1", "Dia: "+formattedDate+" dia de la semana: "+strDiaDeLaSemana);
+
+
+            // llena el ArrayList arLiDia con los dias de el mes correspondiente.
+//            arLiDia.add(new Dia(formattedDate, Integer.toString(i), strDiaDeLaSemana, Integer.toString(0), Integer.toString(0), "0"));
+
+            ContentValues cv = new ContentValues();
+            cv.put("fechaDia", formattedDate);
+            cv.put("horasNormales", 0);
+            cv.put("horasExtra", 0);
+//            cv.put("horasArt54", 0);
+            cv.put("esVacaciones", 0);
+            cv.put("esFestivo", 0);
+            cv.put("esArticulo54", 0);
+//            cv.put("tipoDia", 1);
+            gestor.insertarDias(cv);
+
+            Log.d("log1", formattedDate);
+
+            calendario.set(anio, Calendar.JANUARY, 1); //Setea el calendario a 1 de Enero de este año
+
+
+
         }
     }
 }

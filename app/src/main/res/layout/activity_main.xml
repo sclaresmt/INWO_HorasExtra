@@ -8,35 +8,31 @@
         android:id="@+id/layCabecera"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logo1"
-            android:id="@+id/textView"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="32dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logo2"
-            android:id="@+id/textView2"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="32dp" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mes"
-        android:id="@+id/tvMes"
-        android:layout_gravity="center_vertical"
-        android:textSize="30dp"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mes"
+            android:id="@+id/tvMes"
+            android:layout_gravity="center_vertical"
+            android:textSize="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="35dp"
+            android:id="@+id/textView2"
+            android:gravity="center_horizontal"
+            android:textSize="32dp"
+            android:layout_weight="0.22"
+            android:background="@drawable/logo"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layTitulos"
@@ -63,7 +59,7 @@
             android:id="@+id/colHora1Main"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Hora1"
+            android:text="@string/horasNormalesMin"
             android:textSize="16dp"
             android:gravity="center"
             android:background="@drawable/cell_shape"
@@ -76,7 +72,7 @@
             android:id="@+id/colHora2Main"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Hora2"
+            android:text="@string/horasExtraMin"
             android:textSize="16dp"
             android:gravity="center"
             android:background="@drawable/cell_shape"
@@ -89,7 +85,7 @@
             android:id="@+id/colHora3Main"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Hora3"
+            android:text="@string/horasArt54Min"
             android:textSize="16dp"
             android:gravity="center"
             android:background="@drawable/cell_shape"
