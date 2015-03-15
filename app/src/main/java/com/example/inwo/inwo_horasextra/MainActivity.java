@@ -112,6 +112,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if(id==R.id.hAcumuladas_action_bar){
             dialogoHorasAcumuladas();
         }
+        if(id==R.id.cambiar_codigo_action_bar){
+            Intent i = new Intent(this, CodigoUsuario.class);
+            startActivity(i);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -154,13 +158,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate2 = df2.format(fechaDeHoy);
         String ft2 = formattedDate2.substring(3);
-//        Log.d("log1", "formated2: "+formattedDate2);
-//        Log.d("log1", "ft2: "+ft2);
 
-
-//        Cursor miCursor = gestor.obtenerDias(formattedDate3);
+//        Cursor miCursor = gestor.obtenerDias(formattedDate2);
 //        miCursor.moveToFirst();
 //        Log.d("log1", "Cursor: "+miCursor.getColumnIndexOrThrow("fechaDia"));
+//        gestor.close();
 
         //Carga los dias de el mes seleccionado en el ArrayList arLiDiaList y los pasa al asaptador para mostrarlos.
         ArrayList<Dia> arLiDiaList = new ArrayList<Dia>();
@@ -399,7 +401,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            cv.put("esArticulo54", 0);
 ////          cv.put("tipoDia", 1);
 //            gestor.insertarDias(cv);
-//            gestor.close();
 //
 //            Log.d("log1", formattedDate);
 
