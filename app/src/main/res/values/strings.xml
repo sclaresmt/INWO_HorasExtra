@@ -17,8 +17,8 @@
     <string name="horasArt54Min">H.Art 54</string>
     <string name="title_activity_actualizar_horas">ActualizarHoras</string>
     <string name="title_activity_codigo_usuario">CodigoUsuario</string>
-    <string name="dni">DNI</string>
-    <string name="codigo">Código</string>
-    <string name="guardarCodigo">Guardar Código</string>
+    <string name="dni">Usuario</string>
+    <string name="codigo">Contraseña</string>
+    <string name="guardarCodigo">Acceder</string>
 
 </resources>

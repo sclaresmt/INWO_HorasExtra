@@ -50,6 +50,7 @@ public class GestorBD extends SQLiteOpenHelper {
                 "diaMes INT,"+
                 "esVacaciones TINYINT,"+
                 "esFestivo TINYINT,"+
+                //esEspecial? es necesario?
                 "esArticulo54 TINYINT,"+
 	            "diaSemana VARCHAR(5)"+
                 ");");

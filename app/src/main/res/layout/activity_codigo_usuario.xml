@@ -50,14 +50,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dni"
-            android:id="@+id/tvDniUsuario"
+            android:id="@+id/nomUsuario"
             android:textSize="20dp"
             android:textColor="@color/blanco"
             android:layout_weight="1"
             android:layout_marginRight="10dp" />
 
         <EditText
-            android:id="@+id/etDniUsuario"
+            android:id="@+id/textNomUsuario"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@color/blanco"
@@ -85,7 +85,7 @@
             android:layout_marginRight="10dp" />
 
         <EditText
-            android:id="@+id/etCodigoUsuario"
+            android:id="@+id/textPassUsuario"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@color/blanco"
@@ -98,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/guardarCodigo"
-        android:id="@+id/btnGuardarCodigoUsuario"
+        android:id="@+id/btnAcceder"
         android:background="@drawable/boton_rojo"
         android:textColor="@color/blanco"
         android:layout_gravity="center_horizontal"

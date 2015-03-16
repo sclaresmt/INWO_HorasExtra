@@ -188,7 +188,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.d("log1", "Días devueltos por el cursor: "+String.valueOf(miCursor.getCount()));
         while (miCursor.moveToNext()){
             Log.d("log1", "Dia del mes: "+miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")));
-            Log.d("log1", "Dia de la semana: "+miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana")));
+            Log.d("log1", "Dia de la semana: "+miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana"))+" "+miCursor.getInt(miCursor.getColumnIndexOrThrow("esVacaciones")));
             arLiDiaList.add(new Dia(
                     miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")),
                     String.valueOf(miCursor.getInt(miCursor.getColumnIndexOrThrow("diaMes"))),
@@ -253,14 +253,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         tvHora2.setBackgroundResource(R.drawable.cell_shape_azul);
                         tvHora3.setBackgroundResource(R.drawable.cell_shape_azul);
                     }
-                    else if(((Dia) entrada).getEsVacaciones()==1)
-                    {
-                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
-                        tvDiaStr.setBackgroundResource(R.drawable.cell_shape_verde);
-                        tvHora1.setBackgroundResource(R.drawable.cell_shape_verde);
-                        tvHora2.setBackgroundResource(R.drawable.cell_shape_verde);
-                        tvHora3.setBackgroundResource(R.drawable.cell_shape_verde);
-                    }
                     else
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape);
@@ -268,6 +260,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         tvHora1.setBackgroundResource(R.drawable.cell_shape);
                         tvHora2.setBackgroundResource(R.drawable.cell_shape);
                         tvHora3.setBackgroundResource(R.drawable.cell_shape);
+                    }
+                    if(((Dia) entrada).getEsVacaciones()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvDiaStr.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvHora1.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvHora2.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvHora3.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
                 }
             }
@@ -277,10 +277,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Intent intentHoras = new Intent(contexto, ActualizarHoras.class);
                 startActivityForResult(intentHoras, 1);
-
             }
         });
 
@@ -460,7 +458,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         parametros.add(new BasicNameValuePair("pass", "1234"));
 
         ManejadorConexion actualizador = new ManejadorConexion(this.contexto);
-        actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
-        actualizador.actualizarDias();
+        String datos = actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
+        actualizador.actualizarDias(datos);
     }
 }

@@ -89,6 +89,7 @@ public class ManejadorConexion {
             httpEntity = respuestaHttp.getEntity();
             respuesta = EntityUtils.toString(httpEntity);
 
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             respuesta = "null";
@@ -103,9 +104,10 @@ public class ManejadorConexion {
         return respuesta;
     }
 
-    public void actualizarDias(){
+    public void actualizarDias(String datos){
         try {
-            JSONObject obj = new JSONObject().getJSONObject(respuesta);
+            Log.d("log1", "Respuesta del servidor: "+datos);
+            JSONObject obj = new JSONObject(datos);
             JSONArray arrayDias = obj.getJSONArray("Dias");
             ContentValues cv = new ContentValues();
             GestorBD gestor = GestorBD.getInstancia(this.context);
@@ -125,7 +127,10 @@ public class ManejadorConexion {
 
                 JSONObject d = arrayDias.getJSONObject(i);
                 int especial = Integer.valueOf(d.getString("esEspecial"));
-                cv.put("esEspecial", especial);
+                cv.put("esArticulo54", especial);
+//                cv.put("esEspecial", especial);
+
+                Log.d("log1", "Dia actualizado: "+dia+" "+vacaciones);
 
                 gestor.actualizaDia(cv, dia);
             }
@@ -134,6 +139,5 @@ public class ManejadorConexion {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }
