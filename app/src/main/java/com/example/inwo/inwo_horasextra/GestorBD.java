@@ -44,13 +44,14 @@ public class GestorBD extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE dias("+
                 "fechaDia DATE PRIMARY KEY,"+
-                "horasNormales DECIMAL,"+
-                "horasExtra DECIMAL,"+
-                "horasArt54 DECIMAL,"+
+                "horasNormales FLOAT,"+
+                "horasExtra FLOAT,"+
+                "horasArt54 FLOAT,"+
+                "diaMes INT,"+
                 "esVacaciones TINYINT,"+
                 "esFestivo TINYINT,"+
-                "esArticulo54 TINYINT"+
-//	            "tipoDia INTEGER"+
+                "esArticulo54 TINYINT,"+
+	            "diaSemana VARCHAR(5)"+
                 ");");
     }
 
@@ -71,20 +72,28 @@ public class GestorBD extends SQLiteOpenHelper {
      */
     public void insertarDias(ContentValues cv){
         SQLiteDatabase bdInterna = this.getWritableDatabase();
-        bdInterna.insert("dias", null, cv);
+        bdInterna.insertWithOnConflict("dias", null, cv, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     /**
      * Obtiene todos los días de un mes de la BD interna.
-     * @param fecha de un día cualquiera de ese mes.
+     * @param mes de un día cualquiera de ese mes.
      * @return Cursor con los campos de todos los días de ese mes.
      */
-    public Cursor obtenerDias(String fecha){
-        String [] columnas = {"fechaDia", "horasNormales", "horasExtra", "esVacaciones", "esFestivo", "esArticulo54"};
-        String [] mesYAño = fecha.split("-");
-        String [] parametro = {"__-"+mesYAño[1]+"-"+mesYAño[2]};
+    public Cursor obtenerDias(String mes){
+        String [] columnas = {"fechaDia", "horasNormales", "horasExtra", "horasArt54", "esVacaciones", "esFestivo", "esArticulo54", "diaMes", "diaSemana"};
+//        String [] parametro = {"__-"+mes};
+//        String [] parametro = {mes};
         SQLiteDatabase bdInterna = this.getReadableDatabase();
-        Cursor cursor = bdInterna.query("dias", columnas, null, null, null, null, "fechaDia LIKE ", null);
+//        Cursor cursor = bdInterna.query("dias", columnas, "fechaDia LIKE ?", null, null, null, null, null);
+        Cursor cursor = bdInterna.rawQuery("SELECT * FROM dias WHERE fechaDia LIKE '__-"+mes+"'", null);
+        return cursor;
+    }
+
+    public Cursor obtenerDia(){
+        String [] columnas = {"fechaDia", "horasNormales", "horasExtra", "esVacaciones", "esFestivo", "esArticulo54"};
+        SQLiteDatabase bdInterna = this.getReadableDatabase();
+        Cursor cursor = bdInterna.query("dias", columnas, null, null, null, null, "fechaDia ASC", null);
         return cursor;
     }
 

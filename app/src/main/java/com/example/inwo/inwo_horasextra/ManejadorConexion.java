@@ -4,6 +4,7 @@ package com.example.inwo.inwo_horasextra;
  * Created by Sergio on 14/03/2015.
  */
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
@@ -21,6 +22,9 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,8 +37,8 @@ public class ManejadorConexion {
     public final static int POST = 2;
     private Context context;
 
-    public ManejadorConexion() {
-
+    public ManejadorConexion(Context context) {
+        this.context=context;
     }
 
     /**
@@ -57,9 +61,7 @@ public class ManejadorConexion {
             HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
             //Crea el objeto cliente
-            //DefaultHttpClient httpClient = new DefaultHttpClient();
             DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-            //HttpClient httpClient = AndroidHttpClient.newInstance("Android");
             HttpEntity httpEntity = null;
             HttpResponse respuestaHttp = null;
             Log.d("GCMDemo", "Va a hacer el post");
@@ -99,5 +101,39 @@ public class ManejadorConexion {
         }
 
         return respuesta;
+    }
+
+    public void actualizarDias(){
+        try {
+            JSONObject obj = new JSONObject().getJSONObject(respuesta);
+            JSONArray arrayDias = obj.getJSONArray("Dias");
+            ContentValues cv = new ContentValues();
+            GestorBD gestor = GestorBD.getInstancia(this.context);
+
+            for(int i = 0; i<arrayDias.length(); i++){
+
+                JSONObject a = arrayDias.getJSONObject(i);
+                String dia = a.getString("dia");
+
+                JSONObject b = arrayDias.getJSONObject(i);
+                int vacaciones = Integer.valueOf(b.getString("esVacaciones"));
+                cv.put("esVacaciones", vacaciones);
+
+                JSONObject c = arrayDias.getJSONObject(i);
+                int festivo = Integer.valueOf(c.getString("esFestivo"));
+                cv.put("esFestivo", festivo);
+
+                JSONObject d = arrayDias.getJSONObject(i);
+                int especial = Integer.valueOf(d.getString("esEspecial"));
+                cv.put("esEspecial", especial);
+
+                gestor.actualizaDia(cv, dia);
+            }
+            gestor.close();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }

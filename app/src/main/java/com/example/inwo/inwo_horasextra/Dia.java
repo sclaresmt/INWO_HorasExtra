@@ -2,25 +2,29 @@ package com.example.inwo.inwo_horasextra;
 
 public class Dia {
 
-    private String idDia, diaNum, diaText, horaNormal, horaExtra, horaArt54;
+    private String idDia, diaMes, diaSemana, horaNormal, horaExtra, horaArt54;
+    private int esVacaciones, esFestivo, esArticulo54;
 
-    public Dia(String idDia, String diaNum, String diaText, String horaNormal, String horaExtra, String horaArt54){
+    public Dia(String idDia, String diaMes, String diaSemana, String horaNormal, String horaExtra, String horaArt54, int esVacaciones, int esFestivo, int esArticulo54){
         this.idDia=idDia;
-        this.diaNum=diaNum;
-        this.diaText=diaText;
+        this.diaMes=diaMes;
+        this.diaSemana=diaSemana;
         this.horaNormal=horaNormal;
         this.horaExtra=horaExtra;
         this.horaArt54=horaArt54;
+        this.esVacaciones=esVacaciones;
+        this.esFestivo=esFestivo;
+        this.esArticulo54=esArticulo54;
     }
 
     public String getIdDia() {return idDia; }
 
-    public String getDiaNum() {
-        return diaNum;
+    public String getDiaMes() {
+        return diaMes;
     }
 
-    public String getDiaText() {
-        return diaText;
+    public String getDiaSemana() {
+        return diaSemana;
     }
 
     public String getHoraNormal() {
@@ -33,6 +37,18 @@ public class Dia {
 
     public String getHoraArt54() {
         return horaArt54;
+    }
+
+    public int getEsVacaciones() {
+        return esVacaciones;
+    }
+
+    public int getEsFestivo() {
+        return esFestivo;
+    }
+
+    public int getEsArticulo54() {
+        return esArticulo54;
     }
 
 }

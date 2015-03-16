@@ -7,10 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Editable;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,13 +19,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
@@ -44,9 +44,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private int anio;
     private String strMes; //String del mes
     private Button btnMesAnterior, btnMesSiguiente;
-    Calendar calendario, calendario2, calendario3; //Calendario
-    GestorBD gestor; //Gestor de la SQLite
-    Date fechaDeHoy;
+    private Calendar calendario, calendario2, calendario3; //Calendario
+    private Date fechaDeHoy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +64,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //Contexto.
         contexto=this;
 
-        //Instancia el gestor
-        gestor = gestor.getInstancia(contexto);
-
-       //Instancia el calendario
-       calendario = Calendar.getInstance();
-       calendario2 = Calendar.getInstance();
-       calendario3 = Calendar.getInstance();
+        //Instancia el calendario
+        calendario = Calendar.getInstance();
+        calendario2 = Calendar.getInstance();
+        calendario3 = Calendar.getInstance();
 
         fechaDeHoy=calendario3.getTime();
 
@@ -80,11 +76,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         acumuladoMes=0;
         anio=calendario3.get(Calendar.YEAR);
 
-       guardarAnio();
+        guardarAnio();
 
-       cargaMes();
+        cargaMes();
 
-       horasAcumuladas();
+        horasAcumuladas();
     }
 
     @Override
@@ -157,26 +153,59 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate2 = df2.format(fechaDeHoy);
-        String ft2 = formattedDate2.substring(3);
+        String mesCarga = formattedDate2.substring(3);
+        Log.d("log1", "Fecha para obtener el mes: "+formattedDate2);
+        Log.d("log1", "Fecha para obtener el mes: "+mesCarga);
 
 //        Cursor miCursor = gestor.obtenerDias(formattedDate2);
 //        miCursor.moveToFirst();
 //        Log.d("log1", "Cursor: "+miCursor.getColumnIndexOrThrow("fechaDia"));
 //        gestor.close();
 
-        //Carga los dias de el mes seleccionado en el ArrayList arLiDiaList y los pasa al asaptador para mostrarlos.
+        //Carga los dias de el mes seleccionado en el ArrayList arLiDiaList y los pasa al adaptador para mostrarlos.
         ArrayList<Dia> arLiDiaList = new ArrayList<Dia>();
         arLiDiaList.clear();
         String fechaMesAnio;
-        for(int i = 0; i<arLiDia.size(); i++){
-            fechaMesAnio= arLiDia.get(i).getIdDia().substring(3);
 
-            if(fechaMesAnio.equals(ft2)){
+//        for(int i = 0; i<arLiDia.size(); i++){
+//            fechaMesAnio= arLiDia.get(i).getIdDia().substring(3);
+//
+//            if(fechaMesAnio.equals(ft2)){
+//
+//                arLiDiaList.add(new Dia(arLiDia.get(i).getIdDia(), arLiDia.get(i).getDiaNum(), arLiDia.get(i).getDiaText(),
+//                        arLiDia.get(i).getHoraNormal(), arLiDia.get(i).getHoraExtra(), arLiDia.get(i).getHoraArt54()));
+//            }
+//        }
 
-                arLiDiaList.add(new Dia(arLiDia.get(i).getIdDia(), arLiDia.get(i).getDiaNum(), arLiDia.get(i).getDiaText(),
-                        arLiDia.get(i).getHoraNormal(), arLiDia.get(i).getHoraExtra(), arLiDia.get(i).getHoraArt54()));
-            }
+        GestorBD gestor = GestorBD.getInstancia(this.contexto);
+        Cursor miCursor = gestor.obtenerDias(mesCarga);
+
+//        Cursor miCursors = gestor.obtenerDia();
+//        Log.d("log1", "Días devueltos por el cursor: "+String.valueOf(miCursor.getCount()));
+//        while(miCursors.moveToNext()){
+//            Log.d("log1", "Días devueltos por el cursor: "+miCursors.getString(miCursors.getColumnIndexOrThrow("fechaDia")));
+//        }
+        Log.d("log1", "Días devueltos por el cursor: "+String.valueOf(miCursor.getCount()));
+        while (miCursor.moveToNext()){
+            Log.d("log1", "Dia del mes: "+miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")));
+            Log.d("log1", "Dia de la semana: "+miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana")));
+            arLiDiaList.add(new Dia(
+                    miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")),
+                    String.valueOf(miCursor.getInt(miCursor.getColumnIndexOrThrow("diaMes"))),
+                    miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana")),
+                    String.valueOf(miCursor.getFloat(miCursor.getColumnIndexOrThrow("horasNormales"))),
+                    String.valueOf(miCursor.getFloat(miCursor.getColumnIndexOrThrow("horasExtra"))),
+                    String.valueOf(miCursor.getFloat(miCursor.getColumnIndexOrThrow("horasArt54"))),
+                    miCursor.getInt(miCursor.getColumnIndexOrThrow("esVacaciones")),
+                    miCursor.getInt(miCursor.getColumnIndexOrThrow("esFestivo")),
+                    miCursor.getInt(miCursor.getColumnIndexOrThrow("esArticulo54"))
+            ));
+
+//            arLiDiaList.add(new Dia(arLiDia.get(i).getIdDia(), arLiDia.get(i).getDiaNum(), arLiDia.get(i).getDiaText(),
+//                    arLiDia.get(i).getHoraNormal(), arLiDia.get(i).getHoraExtra(), arLiDia.get(i).getHoraArt54()));
         }
+
+        gestor.close();
 
         lista = (ListView) findViewById(R.id.listaDias);
 
@@ -187,11 +216,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     TextView tvDiaNum = (TextView) view.findViewById(R.id.colDiaNum);
                     if (tvDiaNum != null)
-                        tvDiaNum.setText(((Dia) entrada).getDiaNum());
+                        tvDiaNum.setText(((Dia) entrada).getDiaMes());
 
                     TextView tvDiaStr = (TextView) view.findViewById(R.id.colDiaText);
                     if (tvDiaStr != null)
-                        tvDiaStr.setText(((Dia) entrada).getDiaText());
+                        tvDiaStr.setText(((Dia) entrada).getDiaSemana());
 
                     TextView tvHora1 = (TextView) view.findViewById(R.id.colHora1);
                     if (tvHora1 != null)
@@ -208,7 +237,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                    tvDiaNum.setTextSize(tamanioFuente);
 
                     // color de las filas
-                    if(((Dia) entrada).getDiaText()=="D")
+                    if(((Dia) entrada).getDiaSemana().equals("D"))
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                         tvDiaStr.setBackgroundResource(R.drawable.cell_shape_rojo);
@@ -216,13 +245,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         tvHora2.setBackgroundResource(R.drawable.cell_shape_rojo);
                         tvHora3.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
-                    else if(((Dia) entrada).getDiaText()=="S")
+                    else if(((Dia) entrada).getDiaSemana().equals("S"))
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_azul);
                         tvDiaStr.setBackgroundResource(R.drawable.cell_shape_azul);
                         tvHora1.setBackgroundResource(R.drawable.cell_shape_azul);
                         tvHora2.setBackgroundResource(R.drawable.cell_shape_azul);
                         tvHora3.setBackgroundResource(R.drawable.cell_shape_azul);
+                    }
+                    else if(((Dia) entrada).getEsVacaciones()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvDiaStr.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvHora1.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvHora2.setBackgroundResource(R.drawable.cell_shape_verde);
+                        tvHora3.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
                     else
                     {
@@ -343,6 +380,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //Guarda el año la BD.
     public void guardarAnio(){
 
+        GestorBD gestor = GestorBD.getInstancia(this.contexto);
         calendario.set(anio, Calendar.JANUARY, 1);
 
         //Obtiene el total de dias de ese año.
@@ -388,24 +426,41 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             int diaDelMes = calendario.get(Calendar.DAY_OF_MONTH);
 
             // llena el ArrayList arLiDia con los dias de el mes correspondiente.
-            arLiDia.add(new Dia(formattedDate, Integer.toString(diaDelMes), strDiaDeLaSemana, Integer.toString(0), Integer.toString(0), "0"));
+            arLiDia.add(new Dia(formattedDate, Integer.toString(diaDelMes), strDiaDeLaSemana, Integer.toString(0), Integer.toString(0), "0", 0, 0, 0));
 
-
-//            ContentValues cv = new ContentValues();
-//            cv.put("fechaDia", formattedDate);
-//            cv.put("horasNormales", 0);
-//            cv.put("horasExtra", 0);
-//            cv.put("horasArt54", 0);
-//            cv.put("esVacaciones", 0);
-//            cv.put("esFestivo", 0);
-//            cv.put("esArticulo54", 0);
-////          cv.put("tipoDia", 1);
-//            gestor.insertarDias(cv);
-//
-//            Log.d("log1", formattedDate);
-
-
+            ContentValues cv = new ContentValues();
+            cv.put("fechaDia", formattedDate);
+            cv.put("horasNormales", 0);
+            cv.put("horasExtra", 0);
+            cv.put("horasArt54", 0);
+            cv.put("diaMes", diaDelMes);
+            cv.put("esVacaciones", 0);
+            cv.put("esFestivo", 0);
+            cv.put("esArticulo54", 0);
+            cv.put("diaSemana", strDiaDeLaSemana);
+            gestor.insertarDias(cv);
+            Log.d("log1", "Dia añadido a SQLite: "+formattedDate);
         }
+        gestor.close();
+        actualizarAnio();
+    }
 
+    /**
+     * Actualiza el año en caso de que la versión interna sea anterior a la de la BD externa.
+     * La condición hay que ponerla.
+     */
+    public void actualizarAnio(){
+        //Antes iría una condición.
+        List<NameValuePair> parametros = new ArrayList<>();
+
+        //Para probar
+        parametros.add(new BasicNameValuePair("accion", "loginUsuario"));
+        parametros.add(new BasicNameValuePair("año", "2015"));
+        parametros.add(new BasicNameValuePair("usuario", "sergio"));
+        parametros.add(new BasicNameValuePair("pass", "1234"));
+
+        ManejadorConexion actualizador = new ManejadorConexion(this.contexto);
+        actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
+        actualizador.actualizarDias();
     }
 }
