@@ -6,6 +6,7 @@ package com.example.inwo.inwo_horasextra;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -104,37 +105,78 @@ public class ManejadorConexion {
         return respuesta;
     }
 
+    public int comprobarRespuesta(String resp){
+
+        String descripcion = "null";
+        int codRespuesta = 0;
+        try {
+            JSONObject obj = new JSONObject(resp);
+            descripcion = obj.getString("Descripcion");
+            switch (descripcion){
+                case "Error: Usuario incorrecto.":
+                    codRespuesta = 1;
+                    break;
+
+                case "Error: Contraseña incorrecta.":
+                    codRespuesta = 2;
+                    break;
+
+                case "Acceso correcto.":
+                    codRespuesta = 4;
+                    break;
+
+                case "Calendario actualizado.":
+                    actualizarDias(resp);
+                    codRespuesta = 5;
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return codRespuesta;
+    }
+
     public void actualizarDias(String datos){
+
         try {
             Log.d("log1", "Respuesta del servidor: "+datos);
             JSONObject obj = new JSONObject(datos);
-            JSONArray arrayDias = obj.getJSONArray("Dias");
-            ContentValues cv = new ContentValues();
-            GestorBD gestor = GestorBD.getInstancia(this.context);
+            if(obj.getJSONArray("Dias")!=null) {
+                JSONArray arrayDias = obj.getJSONArray("Dias");
+                ContentValues cv = new ContentValues();
+                GestorBD gestor = GestorBD.getInstancia(this.context);
 
-            for(int i = 0; i<arrayDias.length(); i++){
+                for (int i = 0; i < arrayDias.length(); i++) {
 
-                JSONObject a = arrayDias.getJSONObject(i);
-                String dia = a.getString("dia");
+                    JSONObject a = arrayDias.getJSONObject(i);
+                    String dia = a.getString("dia");
 
-                JSONObject b = arrayDias.getJSONObject(i);
-                int vacaciones = Integer.valueOf(b.getString("esVacaciones"));
-                cv.put("esVacaciones", vacaciones);
+                    JSONObject b = arrayDias.getJSONObject(i);
+                    int vacaciones = Integer.valueOf(b.getString("esVacaciones"));
+                    cv.put("esVacaciones", vacaciones);
 
-                JSONObject c = arrayDias.getJSONObject(i);
-                int festivo = Integer.valueOf(c.getString("esFestivo"));
-                cv.put("esFestivo", festivo);
+                    JSONObject c = arrayDias.getJSONObject(i);
+                    int festivo = Integer.valueOf(c.getString("esFestivo"));
+                    cv.put("esFestivo", festivo);
 
-                JSONObject d = arrayDias.getJSONObject(i);
-                int especial = Integer.valueOf(d.getString("esEspecial"));
-                cv.put("esArticulo54", especial);
-//                cv.put("esEspecial", especial);
+                    JSONObject d = arrayDias.getJSONObject(i);
+                    int especial = Integer.valueOf(d.getString("esEspecial"));
+                    cv.put("esArticulo54", especial);
 
-                Log.d("log1", "Dia actualizado: "+dia+" "+vacaciones);
+                    Log.d("log1", "Dia actualizado: " + dia + " " + vacaciones);
 
-                gestor.actualizaDia(cv, dia);
+                    gestor.actualizaDia(cv, dia);
+                }
+                gestor.close();
+
+                //Actualiza la última version en las preferencias.
+                JSONArray arrayVersion = obj.getJSONArray("Version");
+                JSONObject version = arrayVersion.getJSONObject(0);
+                SharedPreferences preferencias = context.getSharedPreferences("PreferenciasHorasExtra", context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferencias.edit();
+                editor.putString("version", version.getString("ultimaActualizacion"));
+                editor.commit();
             }
-            gestor.close();
 
         } catch (JSONException e) {
             e.printStackTrace();

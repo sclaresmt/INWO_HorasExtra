@@ -9,22 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import static java.lang.Integer.parseInt;
-
 
 public class CodigoUsuario extends ActionBarActivity {
 
     private EditText textoUsuario, textoPass;
     private Button btnAcceder;
+    private SharedPreferences preferencias;
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +24,23 @@ public class CodigoUsuario extends ActionBarActivity {
         textoUsuario = (EditText)findViewById(R.id.textNomUsuario);
         textoPass = (EditText)findViewById(R.id.textPassUsuario);
         btnAcceder = (Button)findViewById(R.id.btnAcceder);
+        preferencias = getSharedPreferences("PreferenciasHorasExtra", this.MODE_PRIVATE);
+        editor = preferencias.edit();
+
+        //Llena los editText con los datos introducidos en conexiones anteriores, si los hubiera.
+        if(this.preferencias.getString("usuario", "inexistente").equals("inexistente")&&
+                this.preferencias.getString("pass", "inexistente").equals("inexistente")){
+            textoUsuario.setHint("Introduzca usuario");
+            textoPass.setHint("Introduzca contraseña");
+        }else{
+            textoUsuario.setText(this.preferencias.getString("usuario", "inexistente"));
+            textoPass.setText(this.preferencias.getString("pass", "inexistente"));
+        }
 
         btnAcceder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                comprobarUltimaConexion();
             }
         });
     }
@@ -63,41 +66,5 @@ public class CodigoUsuario extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Comprueba si la fecha de hoy es 8 días más antigua que la de la última conexión y guarda la actual.
-     */
-    public void comprobarUltimaConexion(){
-        SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferencias.edit();
-        //Cogemos la fecha actual en formato americano para que al restarla tenga sentido.
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        String fechaActual = df.format(cal.getTime());
-        editor.putString("ultimaConexion", fechaActual);
-        editor.commit();
-        int diasPasados = parseInt(fechaActual) - parseInt(preferencias.getString("ultimaConexion", "inexistente"));
-        if(diasPasados>7){
-            comprobarAcceso(preferencias.getString("usuario", "inexistente"), preferencias.getString("pass", "inexistente"));
-        }
-    }
-
-    /**
-     * Comprueba los datos de acceso. Si son válidos se podrá seguir usando la app y comprobará la fecha de la última actualización.
-     */
-    public void comprobarAcceso(String usuario, String pass){
-
-        SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
-        List<NameValuePair> parametros = new ArrayList<>();
-
-        parametros.add(new BasicNameValuePair("accion", "acceso"));
-        parametros.add(new BasicNameValuePair("usuario", usuario));
-        parametros.add(new BasicNameValuePair("pass", pass));
-        parametros.add(new BasicNameValuePair("fechaVersion", preferencias.getString("fechaVersion", "inexistente")));
-
-        ManejadorConexion actualizador = new ManejadorConexion(this);
-        String datos = actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
-
     }
 }

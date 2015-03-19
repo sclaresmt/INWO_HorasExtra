@@ -1,12 +1,14 @@
 package com.example.inwo.inwo_horasextra;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -14,20 +16,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
@@ -77,11 +77,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         acumuladoMes=0;
         anio=calendario3.get(Calendar.YEAR);
 
-        guardarAnio();
-
-        cargaMes();
-
-        horasAcumuladas();
+        new ComprobarDatos().execute();
     }
 
     @Override
@@ -155,8 +151,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate2 = df2.format(fechaDeHoy);
         String mesCarga = formattedDate2.substring(3);
-        Log.d("log1", "Fecha para obtener el mes: "+formattedDate2);
-        Log.d("log1", "Fecha para obtener el mes: "+mesCarga);
+//        Log.d("log1", "Fecha para obtener el mes: "+formattedDate2);
+//        Log.d("log1", "Fecha para obtener el mes: "+mesCarga);
 
 //        Cursor miCursor = gestor.obtenerDias(formattedDate2);
 //        miCursor.moveToFirst();
@@ -186,10 +182,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        while(miCursors.moveToNext()){
 //            Log.d("log1", "Días devueltos por el cursor: "+miCursors.getString(miCursors.getColumnIndexOrThrow("fechaDia")));
 //        }
-        Log.d("log1", "Días devueltos por el cursor: "+String.valueOf(miCursor.getCount()));
+//        Log.d("log1", "Días devueltos por el cursor: "+String.valueOf(miCursor.getCount()));
         while (miCursor.moveToNext()){
-            Log.d("log1", "Dia del mes: "+miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")));
-            Log.d("log1", "Dia de la semana: "+miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana"))+" "+miCursor.getInt(miCursor.getColumnIndexOrThrow("esVacaciones")));
+//            Log.d("log1", "Dia del mes: "+miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")));
+//            Log.d("log1", "Dia de la semana: "+miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana"))+" "+miCursor.getInt(miCursor.getColumnIndexOrThrow("esVacaciones")));
             arLiDiaList.add(new Dia(
                     miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")),
                     String.valueOf(miCursor.getInt(miCursor.getColumnIndexOrThrow("diaMes"))),
@@ -312,7 +308,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         tvHorasAcumuladas.setText(Double.toString(totalHoras));
 
     }
-
 
     //Dialog que sirve para introducir las horas acumuladas
     public void dialogoHorasAcumuladas(){
@@ -438,29 +433,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             cv.put("esArticulo54", 0);
             cv.put("diaSemana", strDiaDeLaSemana);
             gestor.insertarDias(cv);
-            Log.d("log1", "Dia añadido a SQLite: "+formattedDate);
+//            Log.d("log1", "Dia añadido a SQLite: "+formattedDate);
         }
         gestor.close();
-        actualizarAnio();
-    }
-
-    /**
-     * Actualiza el año en caso de que la versión interna sea anterior a la de la BD externa.
-     * La condición hay que ponerla.
-     */
-    public void actualizarAnio(){
-        //Antes iría una condición.
-        List<NameValuePair> parametros = new ArrayList<>();
-
-        //Para probar
-        parametros.add(new BasicNameValuePair("accion", "loginUsuario"));
-        parametros.add(new BasicNameValuePair("año", "2015"));
-        parametros.add(new BasicNameValuePair("usuario", "sergio"));
-        parametros.add(new BasicNameValuePair("pass", "1234"));
-
-        ManejadorConexion actualizador = new ManejadorConexion(this.contexto);
-        String datos = actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
-        actualizador.actualizarDias(datos);
     }
 
     //Cuando se vueve al activity principal.
@@ -471,5 +446,79 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         cargaMes();
         horasAcumuladas();
+    }
+
+    /**
+     * AsyncTask que ejecuta las comprobaciones y muestra el resultado al usuario.
+     */
+    public class ComprobarDatos extends AsyncTask<Void ,String, Integer> {
+
+        ProgressDialog pDialog;
+        String mensaje;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(contexto);
+            pDialog.setMessage("Comprobando datos de acceso. Por favor espere...");
+            pDialog.show();
+
+            //Impide que la pantalla se apague mientras el diálogo está mostrándose
+            pDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            pDialog.setMessage(values[0]);
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            String [] progreso = new String[1];
+            ComprobadorAcceso comprobador = new ComprobadorAcceso(contexto);
+            int codResultado = comprobador.comprobarUltimaConexion();
+            switch(codResultado) {
+                case 0:
+                    mensaje = "Bienvenido. Por favor, introduzca sus datos de acceso.";
+                    break;
+                case 1:
+                    mensaje = "Lo sentimos. Su usuario ha sido dado de baja.";
+                    break;
+                case 2:
+                    mensaje = "La contraseña no es correcta. Quizá la haya cambiado.";
+                    break;
+                case 3:
+                    mensaje = "Datos correctos.";
+                    break;
+                case 4:
+                    mensaje = "Datos correctos.";
+                    break;
+                case 5:
+                    mensaje = "Calendario actualizado.";
+                    break;
+            }
+
+            return codResultado;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            pDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+            if(result==0||result==1||result==2){
+                Intent intent = new Intent(MainActivity.this, CodigoUsuario.class);
+                intent.putExtra("mensaje", mensaje);
+                startActivity(intent);
+            }else{
+                Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show();
+                guardarAnio();
+                cargaMes();
+                horasAcumuladas();
+            }
+        }
     }
 }
