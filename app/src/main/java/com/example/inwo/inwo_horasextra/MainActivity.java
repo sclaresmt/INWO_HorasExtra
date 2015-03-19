@@ -33,6 +33,7 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private ArrayList<Dia> arLiDia; //Almacena todos los dias del año
+    private ArrayList<Dia> arLiDiaList; //Almacena los dias del mes actual visible
     private ListView lista; //Lista para mostrar
     private int totalDiasMes; //Numero de dias que tiene el mes
     private Context contexto;
@@ -163,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        gestor.close();
 
         //Carga los dias de el mes seleccionado en el ArrayList arLiDiaList y los pasa al adaptador para mostrarlos.
-        ArrayList<Dia> arLiDiaList = new ArrayList<Dia>();
+        arLiDiaList = new ArrayList<Dia>();
         arLiDiaList.clear();
         String fechaMesAnio;
 
@@ -278,7 +279,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intentHoras = new Intent(contexto, ActualizarHoras.class);
-                startActivityForResult(intentHoras, 1);
+                intentHoras.putExtra("enviarFecha", arLiDiaList.get(position).getIdDia());
+                startActivity(intentHoras);
             }
         });
 
@@ -296,10 +298,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Double totalHoras = 0.0;
         Double hNorm, hExt, d=0.0;
 
-
-        for(int i =0; i<arLiDia.size();i++){
-            hNorm= Double.parseDouble(arLiDia.get(i).getHoraNormal());
-            hExt= Double.parseDouble(arLiDia.get(i).getHoraExtra());
+        for(int i =0; i<arLiDiaList.size();i++){
+            hNorm= Double.parseDouble(arLiDiaList.get(i).getHoraNormal());
+            hExt= Double.parseDouble(arLiDiaList.get(i).getHoraExtra());
             totalHoras=totalHoras+hNorm-hExt;
         }
 
@@ -460,5 +461,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ManejadorConexion actualizador = new ManejadorConexion(this.contexto);
         String datos = actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
         actualizador.actualizarDias(datos);
+    }
+
+    //Cuando se vueve al activity principal.
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        cargaMes();
+        horasAcumuladas();
     }
 }
