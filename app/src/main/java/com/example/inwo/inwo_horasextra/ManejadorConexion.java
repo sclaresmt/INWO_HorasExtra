@@ -163,9 +163,10 @@ public class ManejadorConexion {
                     int especial = Integer.valueOf(d.getString("esEspecial"));
                     cv.put("esArticulo54", especial);
 
-                    Log.d("log1", "Dia actualizado: " + dia + " " + vacaciones);
+//                    Log.d("log1", "Dia actualizado: " + dia + " " + vacaciones);
 
-                    gestor.actualizaDia(cv, dia);
+//                    int registrosActualizados = gestor.actualizaDia(cv, dia);
+//                    Log.d("Registros: ", ""+registrosActualizados);
                 }
                 gestor.close();
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Sergio on 06/03/2015.
@@ -83,10 +84,7 @@ public class GestorBD extends SQLiteOpenHelper {
      */
     public Cursor obtenerDias(String mes){
         String [] columnas = {"fechaDia", "horasNormales", "horasExtra", "horasArt54", "esVacaciones", "esFestivo", "esArticulo54", "diaMes", "diaSemana"};
-//        String [] parametro = {"__-"+mes};
-//        String [] parametro = {mes};
         SQLiteDatabase bdInterna = this.getReadableDatabase();
-//        Cursor cursor = bdInterna.query("dias", columnas, "fechaDia LIKE ?", null, null, null, null, null);
         Cursor cursor = bdInterna.rawQuery("SELECT * FROM dias WHERE fechaDia LIKE '__-"+mes+"'", null);
         return cursor;
     }
@@ -107,5 +105,6 @@ public class GestorBD extends SQLiteOpenHelper {
         SQLiteDatabase bdInterna = this.getWritableDatabase();
         String [] argumentosWhere = {dia};
         bdInterna.update("dias", cv, "fechaDia=?", argumentosWhere);
+        Log.d("Update SQLite: ", "Dia "+dia+" "+cv.getAsInteger("esVacaciones"));
     }
 }

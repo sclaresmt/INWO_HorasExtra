@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mes=calendario3.get(Calendar.MONTH);
         acumuladoMes=0;
         anio=calendario3.get(Calendar.YEAR);
-
+        guardarAnio();
         new ComprobarDatos().execute();
     }
 
@@ -185,7 +185,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        }
 //        Log.d("log1", "Días devueltos por el cursor: "+String.valueOf(miCursor.getCount()));
         while (miCursor.moveToNext()){
-//            Log.d("log1", "Dia del mes: "+miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")));
+//            Log.d("log1", "Dia del mes: "+miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia"))+" "+miCursor.getInt(miCursor.getColumnIndexOrThrow("esVacaciones")));
 //            Log.d("log1", "Dia de la semana: "+miCursor.getString(miCursor.getColumnIndexOrThrow("diaSemana"))+" "+miCursor.getInt(miCursor.getColumnIndexOrThrow("esVacaciones")));
             arLiDiaList.add(new Dia(
                     miCursor.getString(miCursor.getColumnIndexOrThrow("fechaDia")),
@@ -198,7 +198,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     miCursor.getInt(miCursor.getColumnIndexOrThrow("esFestivo")),
                     miCursor.getInt(miCursor.getColumnIndexOrThrow("esArticulo54"))
             ));
-
 //            arLiDiaList.add(new Dia(arLiDia.get(i).getIdDia(), arLiDia.get(i).getDiaNum(), arLiDia.get(i).getDiaText(),
 //                    arLiDia.get(i).getHoraNormal(), arLiDia.get(i).getHoraExtra(), arLiDia.get(i).getHoraArt54()));
         }
@@ -450,7 +449,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     //Cuando se vueve al activity principal.
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -547,7 +545,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 startActivityForResult(intent, 1);
             }else{
                 Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show();
-                guardarAnio();
                 cargaMes();
                 horasAcumuladas();
             }
