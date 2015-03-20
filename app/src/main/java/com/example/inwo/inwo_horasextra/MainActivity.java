@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -276,6 +277,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intentHoras = new Intent(contexto, ActualizarHoras.class);
                 intentHoras.putExtra("enviarFecha", arLiDiaList.get(position).getIdDia());
+                intentHoras.putExtra("enviarHorasRecuperadas", arLiDiaList.get(position).getHoraNormal());
+                intentHoras.putExtra("enviarHorasDisfrutadas", arLiDiaList.get(position).getHoraExtra());
+                intentHoras.putExtra("enviarHorasArt54", arLiDiaList.get(position).getHoraArt54());
                 startActivity(intentHoras);
             }
         });
@@ -292,20 +296,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         tvHorasAcumuladas = (TextView) findViewById(R.id.horasAcumuladasResultado);
         Double totalHoras = 0.0;
-        Double hNorm, hExt, d=0.0;
+        Double hNorm, hExt, dAcu, dRecDis=0.0;
 
-        for(int i =0; i<arLiDiaList.size();i++){
-            hNorm= Double.parseDouble(arLiDiaList.get(i).getHoraNormal());
-            hExt= Double.parseDouble(arLiDiaList.get(i).getHoraExtra());
-            totalHoras=totalHoras+hNorm-hExt;
-        }
+//        for(int i =0; i<arLiDiaList.size();i++){
+//            hNorm= Double.parseDouble(arLiDiaList.get(i).getHoraNormal());
+//            hExt= Double.parseDouble(arLiDiaList.get(i).getHoraExtra());
+//            totalHoras=totalHoras+hNorm-hExt;
+//        }
 
         //Recoge las horas guardadas en las preferencias.
-        d=Double.parseDouble(prefs.getString("horasAcumuladas", "0"));
-        //Operacion que devuelve el total de horas.
-        totalHoras=totalHoras+d;
+        dRecDis=Double.parseDouble(prefs.getString("horasRecuperadasDisfrutadas", "0"));
+        dAcu=Double.parseDouble(prefs.getString("horasAcumuladas", "0"));
 
-        tvHorasAcumuladas.setText(Double.toString(totalHoras));
+
+        //Operacion que devuelve el total de horas.
+
+        totalHoras=dRecDis+dAcu;
+        Log.d("log1", "totalHoras= "+totalHoras);
+
+        DecimalFormat dfFormatoBueno = new DecimalFormat("#.##");
+        String acotacionHoras = dfFormatoBueno.format(totalHoras);
+
+        tvHorasAcumuladas.setText(acotacionHoras);
 
     }
 
@@ -395,7 +407,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             // add one day to the date/calendar
             calendario.set(Calendar.DAY_OF_YEAR, i);
             formattedDate = df.format(calendario.getTime());
-
 
             int diaDeLaSemana=calendario.get(Calendar.DAY_OF_WEEK); //Dia de la semana en el que estamos
             String strDiaDeLaSemana=null; //String del dia de la semana
