@@ -454,9 +454,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-
         cargaMes();
         horasAcumuladas();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                Toast.makeText(contexto, "Datos correctos.", Toast.LENGTH_LONG).show();
+                guardarAnio();
+                cargaMes();
+                horasAcumuladas();
+            }else{
+                new ComprobarDatos().execute();
+            }
+        }
     }
 
     /**
@@ -487,8 +501,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         @Override
         protected Integer doInBackground(Void... voids) {
             String [] progreso = new String[1];
+
             ComprobadorAcceso comprobador = new ComprobadorAcceso(contexto);
+            progreso[0] = "Conectando...";
+            publishProgress(progreso);
+
             int codResultado = comprobador.comprobarUltimaConexion();
+            progreso[0] = "Recibiendo resultado...";
+            publishProgress(progreso);
+
             switch(codResultado) {
                 case 0:
                     mensaje = "Bienvenido. Por favor, introduzca sus datos de acceso.";
@@ -523,7 +544,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if(result==0||result==1||result==2){
                 Intent intent = new Intent(MainActivity.this, CodigoUsuario.class);
                 intent.putExtra("mensaje", mensaje);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }else{
                 Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show();
                 guardarAnio();

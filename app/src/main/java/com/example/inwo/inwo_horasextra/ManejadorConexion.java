@@ -106,7 +106,7 @@ public class ManejadorConexion {
     }
 
     public int comprobarRespuesta(String resp){
-
+        Log.d("Respuesta HTTP: ", resp);
         String descripcion = "null";
         int codRespuesta = 0;
         try {
@@ -170,11 +170,9 @@ public class ManejadorConexion {
                 gestor.close();
 
                 //Actualiza la última version en las preferencias.
-                JSONArray arrayVersion = obj.getJSONArray("Version");
-                JSONObject version = arrayVersion.getJSONObject(0);
                 SharedPreferences preferencias = context.getSharedPreferences("PreferenciasHorasExtra", context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferencias.edit();
-                editor.putString("version", version.getString("ultimaActualizacion"));
+                editor.putString("version", obj.getString("Version"));
                 editor.commit();
             }
 
