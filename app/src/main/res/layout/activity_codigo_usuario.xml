@@ -34,7 +34,8 @@
             android:layout_gravity="center_vertical"
             android:textSize="30dp"
             android:layout_marginLeft="5dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="#827f81" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +64,8 @@
             android:background="@color/blanco"
             android:textSize="20dp"
             android:inputType="text"
-            android:gravity="right" />
+            android:gravity="right"
+            android:textColor="#827f81" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,7 +93,8 @@
             android:background="@color/blanco"
             android:textSize="20dp"
             android:inputType="numberDecimal"
-            android:gravity="right" />
+            android:gravity="right"
+            android:textColor="#827f81" />
     </LinearLayout>
 
     <Button
@@ -105,5 +108,15 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/viewMensaje"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="#827f81" />
 
 </LinearLayout>

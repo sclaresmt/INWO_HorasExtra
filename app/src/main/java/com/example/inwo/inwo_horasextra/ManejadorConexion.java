@@ -109,29 +109,34 @@ public class ManejadorConexion {
         Log.d("Respuesta HTTP: ", resp);
         String descripcion = "null";
         int codRespuesta = 0;
-        try {
-            JSONObject obj = new JSONObject(resp);
-            descripcion = obj.getString("Descripcion");
-            switch (descripcion){
-                case "Error: Usuario incorrecto.":
-                    codRespuesta = 1;
-                    break;
+        if(respuesta!="null"){
+            try {
+                JSONObject obj = new JSONObject(resp);
+                descripcion = obj.getString("Descripcion");
+                switch (descripcion){
+                    case "Error: Usuario incorrecto.":
+                        codRespuesta = 1;
+                        break;
 
-                case "Error: Contraseña incorrecta.":
-                    codRespuesta = 2;
-                    break;
+                    case "Error: Contraseña incorrecta.":
+                        codRespuesta = 2;
+                        break;
 
-                case "Acceso correcto.":
-                    codRespuesta = 4;
-                    break;
+                    case "Acceso correcto.":
+                        codRespuesta = 4;
+                        break;
 
-                case "Calendario actualizado.":
-                    actualizarDias(resp);
-                    codRespuesta = 5;
-                    break;
+                    case "Calendario actualizado.":
+                        actualizarDias(resp);
+                        codRespuesta = 5;
+                        break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return codRespuesta;
+        }else{
+            codRespuesta=6;
         }
         return codRespuesta;
     }
@@ -139,7 +144,6 @@ public class ManejadorConexion {
     public void actualizarDias(String datos){
 
         try {
-            Log.d("log1", "Respuesta del servidor: "+datos);
             JSONObject obj = new JSONObject(datos);
             if(obj.getJSONArray("Dias")!=null) {
                 JSONArray arrayDias = obj.getJSONArray("Dias");
@@ -163,10 +167,7 @@ public class ManejadorConexion {
                     int especial = Integer.valueOf(d.getString("esEspecial"));
                     cv.put("esArticulo54", especial);
 
-//                    Log.d("log1", "Dia actualizado: " + dia + " " + vacaciones);
-
-//                    int registrosActualizados = gestor.actualizaDia(cv, dia);
-//                    Log.d("Registros: ", ""+registrosActualizados);
+                    gestor.actualizaDia(cv, dia);
                 }
                 gestor.close();
 

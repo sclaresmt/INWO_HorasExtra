@@ -461,7 +461,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1){
             if(resultCode==RESULT_OK){
-                Toast.makeText(contexto, "Datos correctos.", Toast.LENGTH_LONG).show();
+                String msg = data.getStringExtra("mensaje");
+                Toast.makeText(contexto, msg, Toast.LENGTH_LONG).show();
                 guardarAnio();
                 cargaMes();
                 horasAcumuladas();
@@ -513,10 +514,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     mensaje = "Bienvenido. Por favor, introduzca sus datos de acceso.";
                     break;
                 case 1:
-                    mensaje = "Lo sentimos. Su usuario ha sido dado de baja.";
+                    mensaje = "Lo sentimos, ese usuario no existe.";
                     break;
                 case 2:
-                    mensaje = "La contraseña no es correcta. Quizá la haya cambiado.";
+                    mensaje = "La contraseña no es correcta.";
                     break;
                 case 3:
                     mensaje = "Datos correctos.";
@@ -525,7 +526,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     mensaje = "Datos correctos.";
                     break;
                 case 5:
+                    progreso[0] = "Actualizando el calendario...";
+                    publishProgress(progreso);
                     mensaje = "Calendario actualizado.";
+                    break;
+                case 6:
+                    mensaje = "Conexión deficiente o nula. Por favor, compruebe su conexión o inténtelo más tarde.";
                     break;
             }
 
@@ -539,7 +545,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (pDialog.isShowing()) {
                 pDialog.dismiss();
             }
-            if(result==0||result==1||result==2){
+            if(result==0||result==1||result==2||result==6){
                 Intent intent = new Intent(MainActivity.this, CodigoUsuario.class);
                 intent.putExtra("mensaje", mensaje);
                 startActivityForResult(intent, 1);

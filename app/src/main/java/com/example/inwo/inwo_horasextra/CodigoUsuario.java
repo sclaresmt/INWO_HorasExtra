@@ -13,16 +13,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class CodigoUsuario extends ActionBarActivity {
+public class CodigoUsuario extends ActionBarActivity implements View.OnClickListener {
 
     private EditText textoUsuario, textoPass;
     private Button btnAcceder;
     private SharedPreferences preferencias;
     private SharedPreferences.Editor editor;
     private Context contexto;
+    private TextView viewMensaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,32 +37,37 @@ public class CodigoUsuario extends ActionBarActivity {
         preferencias = getSharedPreferences("PreferenciasHorasExtra", this.MODE_PRIVATE);
         editor = preferencias.edit();
         contexto = this;
+        viewMensaje = (TextView)findViewById(R.id.viewMensaje);
 
         //Muestra el mensaje con la razón de abrir esta activity, pasada en el Intent.
         Intent intent = getIntent();
         String mensaje = intent.getStringExtra("mensaje");
-        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+        viewMensaje.setText(mensaje);
+//        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
 
         //Llena los editText con los datos introducidos en conexiones anteriores, si los hubiera.
         if(this.preferencias.getString("usuario", "inexistente").equals("inexistente")&&
                 this.preferencias.getString("pass", "inexistente").equals("inexistente")){
-            textoUsuario.setHint("Introduzca usuario");
-            textoPass.setHint("Introduzca contraseña");
+
         }else{
             textoUsuario.setText(this.preferencias.getString("usuario", "inexistente"));
             textoPass.setText(this.preferencias.getString("pass", "inexistente"));
         }
 
-        btnAcceder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString("usuario", textoUsuario.getText().toString());
-                editor.commit();
-                editor.putString("pass", textoPass.getText().toString());
-                editor.commit();
-                new ComprobarLogin().execute();
-            }
-        });
+        btnAcceder.setOnClickListener(this);
+        textoUsuario.setOnClickListener(this);
+        textoPass.setOnClickListener(this);
+
+//        btnAcceder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editor.putString("usuario", textoUsuario.getText().toString());
+//                editor.commit();
+//                editor.putString("pass", textoPass.getText().toString());
+//                editor.commit();
+//                new ComprobarLogin().execute();
+//            }
+//        });
     }
 
     @Override
@@ -83,6 +90,21 @@ public class CodigoUsuario extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v==btnAcceder){
+            editor.putString("usuario", textoUsuario.getText().toString());
+            editor.commit();
+            editor.putString("pass", textoPass.getText().toString());
+            editor.commit();
+            new ComprobarLogin().execute();
+        }else if(v==textoUsuario){
+            textoUsuario.setText("");
+        }else{
+            textoPass.setText("");
+        }
     }
 
     /**
@@ -127,10 +149,10 @@ public class CodigoUsuario extends ActionBarActivity {
                     mensaje = "Por favor, introduzca sus datos de acceso.";
                     break;
                 case 1:
-                    mensaje = "Lo sentimos. Su usuario ha sido dado de baja.";
+                    mensaje = "Lo sentimos, el usuario no existe.";
                     break;
                 case 2:
-                    mensaje = "La contraseña no es correcta. Quizá la haya cambiado.";
+                    mensaje = "La contraseña no es correcta.";
                     break;
                 case 3:
                     mensaje = "Datos correctos.";
@@ -139,7 +161,12 @@ public class CodigoUsuario extends ActionBarActivity {
                     mensaje = "Datos correctos.";
                     break;
                 case 5:
+                    progreso[0] = "Actualizando el calendario...";
+                    publishProgress(progreso);
                     mensaje = "Calendario actualizado.";
+                    break;
+                case 6:
+                    mensaje = "Conexión deficiente o nula. Por favor, compruebe su conexión o inténtelo más tarde.";
                     break;
             }
 
@@ -161,6 +188,7 @@ public class CodigoUsuario extends ActionBarActivity {
                 finish();
             }else{
                 Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show();
+                viewMensaje.setText(mensaje);
             }
         }
     }

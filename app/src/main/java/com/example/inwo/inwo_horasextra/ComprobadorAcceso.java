@@ -2,7 +2,6 @@ package com.example.inwo.inwo_horasextra;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -47,8 +46,8 @@ public class ComprobadorAcceso {
         if(this.preferencias.getString("ultimaConexion", "inexistente").equals("inexistente")==false) {
             diasPasados = parseInt(fechaActual) - parseInt(this.preferencias.getString("ultimaConexion", "inexistente"));
         }
-        Log.d("log1", "Ultima conexión: " + this.preferencias.getString("ultimaConexion", "inexistente"));
-        Log.d("log1", "Fecha actual: "+ fechaActual);
+//        Log.d("log1", "Ultima conexión: " + this.preferencias.getString("ultimaConexion", "inexistente"));
+//        Log.d("log1", "Fecha actual: "+ fechaActual);
 
         //Si los días pasados desde la última son más de 7 comprueba el acceso.
         if(diasPasados>7||diasPasados==-1){
@@ -75,7 +74,6 @@ public class ComprobadorAcceso {
         parametros.add(new BasicNameValuePair("usuario", usuario));
         parametros.add(new BasicNameValuePair("pass", pass));
         parametros.add(new BasicNameValuePair("año", fechaActual.substring(0, 4)));
-        Log.d("Año actual", "Año actual: "+ fechaActual.substring(0, 4));
         parametros.add(new BasicNameValuePair("version", this.preferencias.getString("version", "inexistente")));
 
         ManejadorConexion actualizador = new ManejadorConexion(this.context);
