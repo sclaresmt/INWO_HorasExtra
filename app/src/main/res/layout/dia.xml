@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/colDiaNum"
-        android:layout_width="20dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="D"
         android:textSize="16dp"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/colDiaText"
-        android:layout_width="20dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="S"
         android:textSize="16dp"
