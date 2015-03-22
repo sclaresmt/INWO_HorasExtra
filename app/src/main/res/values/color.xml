@@ -5,4 +5,5 @@
     <item name="negro" type="color">#000000</item>
     <item name="rojoOscuro" type="color">#DA0000</item>
     <item name="rojoClaro" type="color">#FF4E4E</item>
+    <item name="gris" type="color">#9C9C9C</item>
 </resources>

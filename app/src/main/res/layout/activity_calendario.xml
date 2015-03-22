@@ -37,13 +37,10 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <CalendarView
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:firstDayOfWeek="2"
-        android:id="@+id/calendarView"
-        style="@style/Widget.CalendarView.Custom"
-        android:showWeekNumber="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false" />
+        android:id="@+id/grid"
+        android:numColumns="7"/>
+
 </LinearLayout>
