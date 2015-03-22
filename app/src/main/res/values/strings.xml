@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_calendario">Calendario</string>
     <string name="mesSiguiente">Siguiente</string>
-    <string name="mesAnterior">Aterior</string>
+    <string name="mesAnterior">Anterior</string>
     <string name="horasAcumuladas">H.Acumuladas</string>
     <string name="horasNormales">H.Recuperadas</string>
     <string name="horasExtra">H.Disfrutadas</string>
@@ -20,5 +20,6 @@
     <string name="dni">Usuario</string>
     <string name="codigo">Contraseña</string>
     <string name="guardarCodigo">Acceder</string>
+    <string name="title_activity_splash">Splash</string>
 
 </resources>

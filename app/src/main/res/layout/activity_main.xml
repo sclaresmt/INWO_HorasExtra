@@ -9,8 +9,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
             android:text="Mes"
             android:id="@+id/tvMes"
             android:layout_gravity="center_vertical"
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1" />
 
@@ -140,7 +140,7 @@
         android:layout_marginTop="5dp">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/mesAnterior"
             android:id="@+id/btnMesAnterior"
@@ -149,7 +149,7 @@
             android:textColor="@color/blanco"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/mesSiguiente"
             android:id="@+id/btnMesSiguiente"

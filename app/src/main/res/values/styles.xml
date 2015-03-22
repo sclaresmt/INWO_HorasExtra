@@ -19,7 +19,13 @@
 
             <!-- Light.DarkActionBar specific -->
             <item name="actionBarWidgetTheme">@style/Theme.Temah.Widget</item>
+            <item name="android:calendarViewStyle">@style/Widget.CalendarView.Custom</item>
 
+        </style>
+
+        <style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
+            <item name="android:focusedMonthDateColor">@color/negro</item>
+            <item name="android:weekNumberColor">@color/rojoClaro</item>
         </style>
 
         <style name="ActionBar.Solid.Temah" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">

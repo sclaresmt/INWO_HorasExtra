@@ -93,6 +93,13 @@ public class CodigoUsuario extends ActionBarActivity implements View.OnClickList
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+
+    }
+
+    @Override
     public void onClick(View v) {
         if(v==btnAcceder){
             editor.putString("usuario", textoUsuario.getText().toString());
