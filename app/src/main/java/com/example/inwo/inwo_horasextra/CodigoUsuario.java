@@ -95,8 +95,9 @@ public class CodigoUsuario extends ActionBarActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent resultado = new Intent();
+        setResult(MainActivity.RESULT_CANCELED, resultado);
         finish();
-
     }
 
     @Override

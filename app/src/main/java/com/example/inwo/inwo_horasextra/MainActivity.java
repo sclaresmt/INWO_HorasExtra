@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private int totalDiasMes; //Numero de dias que tiene el mes
     private Context contexto;
     private SharedPreferences prefs; //Preferencias
+    private SharedPreferences.Editor editor;
     private TextView tvHorasAcumuladas;
     private TextView tvMes;
     private int mes;
@@ -48,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Button btnMesAnterior, btnMesSiguiente;
     private Calendar calendario, calendario2, calendario3; //Calendario
     private Date fechaDeHoy;
+    private static int contador = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         acumuladoMes=0;
         anio=calendario3.get(Calendar.YEAR);
         guardarAnio();
+
+        prefs = getSharedPreferences("PreferenciasHorasExtra", this.MODE_PRIVATE);
+        editor = prefs.edit();
+
         new ComprobarDatos().execute();
+//        if(prefs.getInt("intentos", 0)==0){
+//            new ComprobarDatos().execute();
+//        }else{
+//            editor.putInt("intentos", 0);
+//            finish();
+//        }
+
     }
 
     @Override
@@ -291,7 +304,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //Nos da el total de horas acumuladas.
     public void horasAcumuladas(){
         //Instancia las preferencias.
-        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
+//        prefs = getSharedPreferences("PreferenciasHorasExtra",Context.MODE_PRIVATE);
 
         tvHorasAcumuladas = (TextView) findViewById(R.id.horasAcumuladasResultado);
         Double totalHoras = 0.0;
@@ -339,7 +352,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         EditText etAcumuladas = (EditText) prompt.findViewById(R.id.etRecogeHorasAcumuladas);
                         String sAcumuladas = etAcumuladas.getText().toString();
 
-                        SharedPreferences.Editor editor = prefs.edit();
+                        editor = prefs.edit();
                         if (sAcumuladas.equals("")) {
                             sAcumuladas = "0";
                         } else {
@@ -466,6 +479,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 guardarAnio();
                 cargaMes();
                 horasAcumuladas();
+            }else if(resultCode==RESULT_CANCELED){
+                finish();
             }else{
                 new ComprobarDatos().execute();
             }
