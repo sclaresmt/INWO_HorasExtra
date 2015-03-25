@@ -16,7 +16,7 @@
     <string name="horasExtraMin">H.Disf</string>
     <string name="horasArt54Min">H.Art 54</string>
     <string name="title_activity_actualizar_horas">ActualizarHoras</string>
-    <string name="title_activity_codigo_usuario">CodigoUsuario</string>
+    <string name="title_activity_codigo_usuario">Codigo de Usuario</string>
     <string name="dni">Usuario</string>
     <string name="codigo">Contraseña</string>
     <string name="guardarCodigo">Acceder</string>
