@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" >
+        android:layout_marginBottom="5dp"
+        android:background="#FFFFFF">
 
         <TextView
             android:layout_width="140dp"
@@ -37,10 +38,209 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <GridView
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/grid"
-        android:numColumns="7"/>
+        android:id="@+id/scrollView" >
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enero"
+                android:id="@+id/txEne"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txFeb"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView2"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txMar"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView3"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txAbr"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView4"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txMay"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView5"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txJun"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView6"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txJul"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView7"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txAgo"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView8"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txSep"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView9"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txOct"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView10"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tNov"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView11"
+                android:numColumns="7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txDic"
+                android:textSize="24dp"
+                android:textColor="@color/blanco"
+                android:layout_marginRight="100dp"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="10dp" />
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/gridView12"
+                android:numColumns="7" />
+
+        </TableLayout>
+    </ScrollView>
 
 </LinearLayout>
