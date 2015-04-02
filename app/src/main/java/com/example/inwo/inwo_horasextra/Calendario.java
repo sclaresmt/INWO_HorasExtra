@@ -175,6 +175,14 @@ public class Calendario extends ActionBarActivity {
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                    }
                 }
             }
         });
@@ -294,6 +302,14 @@ public class Calendario extends ActionBarActivity {
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }
@@ -415,6 +431,14 @@ public class Calendario extends ActionBarActivity {
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                    }
                 }
             }
         });
@@ -534,6 +558,14 @@ public class Calendario extends ActionBarActivity {
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }
@@ -655,6 +687,14 @@ public class Calendario extends ActionBarActivity {
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                    }
                 }
             }
         });
@@ -774,6 +814,14 @@ public class Calendario extends ActionBarActivity {
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }
@@ -895,6 +943,14 @@ public class Calendario extends ActionBarActivity {
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                    }
                 }
             }
         });
@@ -1014,6 +1070,14 @@ public class Calendario extends ActionBarActivity {
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }
@@ -1135,6 +1199,14 @@ public class Calendario extends ActionBarActivity {
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                    }
                 }
             }
         });
@@ -1254,6 +1326,14 @@ public class Calendario extends ActionBarActivity {
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }
@@ -1375,6 +1455,14 @@ public class Calendario extends ActionBarActivity {
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
                     }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                    }
                 }
             }
         });
@@ -1494,6 +1582,14 @@ public class Calendario extends ActionBarActivity {
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }

@@ -271,6 +271,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         tvHora2.setBackgroundResource(R.drawable.cell_shape);
                         tvHora3.setBackgroundResource(R.drawable.cell_shape);
                     }
+
                     if(((Dia) entrada).getEsVacaciones()==1)
                     {
                         tvDiaNum.setBackgroundResource(R.drawable.cell_shape_verde);
@@ -278,6 +279,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         tvHora1.setBackgroundResource(R.drawable.cell_shape_verde);
                         tvHora2.setBackgroundResource(R.drawable.cell_shape_verde);
                         tvHora3.setBackgroundResource(R.drawable.cell_shape_verde);
+                    }
+                    if(((Dia) entrada).getEsArticulo54()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_cyan);
+                        tvDiaStr.setBackgroundResource(R.drawable.cell_shape_cyan);
+                        tvHora1.setBackgroundResource(R.drawable.cell_shape_cyan);
+                        tvHora2.setBackgroundResource(R.drawable.cell_shape_cyan);
+                        tvHora3.setBackgroundResource(R.drawable.cell_shape_cyan);
+                    }
+                    if(((Dia) entrada).getEsFestivo()==1)
+                    {
+                        tvDiaNum.setBackgroundResource(R.drawable.cell_shape_rojo);
+                        tvDiaStr.setBackgroundResource(R.drawable.cell_shape_rojo);
+                        tvHora1.setBackgroundResource(R.drawable.cell_shape_rojo);
+                        tvHora2.setBackgroundResource(R.drawable.cell_shape_rojo);
+                        tvHora3.setBackgroundResource(R.drawable.cell_shape_rojo);
                     }
                 }
             }

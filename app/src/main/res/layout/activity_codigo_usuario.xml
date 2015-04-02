@@ -75,7 +75,8 @@
             android:textSize="20dp"
             android:inputType="text"
             android:gravity="right"
-            android:textColor="#827f81" />
+            android:textColor="#827f81"
+            android:imeOptions="actionDone"/>
     </LinearLayout>
 
     <LinearLayout
@@ -102,9 +103,10 @@
             android:layout_height="wrap_content"
             android:background="@color/blanco"
             android:textSize="20dp"
-            android:inputType="text"
+            android:inputType="number"
             android:gravity="right"
-            android:textColor="#827f81" />
+            android:textColor="#827f81"
+            android:imeOptions="actionDone"/>
     </LinearLayout>
 
     <Button
