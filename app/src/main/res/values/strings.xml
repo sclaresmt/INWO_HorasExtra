@@ -35,4 +35,12 @@
     <string name="noviembre">Noviembre</string>
     <string name="diciembre">Diciembre</string>
 
+    <string name="lunes">L</string>
+    <string name="martes">M</string>
+    <string name="miercoles">MI</string>
+    <string name="jueves">J</string>
+    <string name="viernes">V</string>
+    <string name="sabado">S</string>
+    <string name="domingo">D</string>
+
 </resources>

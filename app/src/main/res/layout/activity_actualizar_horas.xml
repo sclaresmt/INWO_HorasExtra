@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="15dp"
-        android:background="#FFFFFF" >
+        android:background="@drawable/cell_shape"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp">
 
         <TextView
             android:layout_width="140dp"
@@ -63,7 +65,7 @@
             android:background="@color/blanco"
             android:textSize="20dp"
             android:inputType="numberDecimal"
-            android:gravity="right" />
+            android:gravity="center_horizontal" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,7 +93,7 @@
             android:background="@color/blanco"
             android:textSize="20dp"
             android:inputType="numberDecimal"
-            android:gravity="right" />
+            android:gravity="center_horizontal" />
     </LinearLayout>
 
     <LinearLayout
@@ -119,7 +121,7 @@
             android:background="@color/blanco"
             android:textSize="20dp"
             android:inputType="numberDecimal"
-            android:gravity="right" />
+            android:gravity="center_horizontal" />
     </LinearLayout>
 
     <Button
@@ -133,5 +135,14 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="fecha"
+        android:id="@+id/tvFechaActuarHoras"
+        android:textColor="@color/rojo"
+        android:textSize="20dp"
+        android:gravity="bottom|right" />
 
 </LinearLayout>

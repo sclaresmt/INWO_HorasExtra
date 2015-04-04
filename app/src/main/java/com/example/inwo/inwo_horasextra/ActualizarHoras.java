@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 
 
 public class ActualizarHoras extends ActionBarActivity implements View.OnClickListener{
@@ -19,20 +22,34 @@ public class ActualizarHoras extends ActionBarActivity implements View.OnClickLi
     private Button btnGuardarHoras;
     private Context contexto;
     private String fechaRecibida, horaRecuperadaRecibida, horaDisfrutadaRecibida, horaArt54Recibida;
+    private String diaRecibido, mesRecibido, anioRecibido;
     private String  guardarRecuperada, guardarDisfrutada;
+    private boolean sumaRec, sumaDis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actualizar_horas);
 
+        sumaRec=true;
+        sumaDis=true;
+
         Bundle recibeFecha = getIntent().getExtras();
         if (recibeFecha != null) {
             fechaRecibida = recibeFecha.getString("enviarFecha");
+            diaRecibido = recibeFecha.getString("enviarDia");
+            mesRecibido = recibeFecha.getString("enviarMes");
+            anioRecibido = recibeFecha.getString("enviarAnio");
             horaRecuperadaRecibida = recibeFecha.getString("enviarHorasRecuperadas");
             horaDisfrutadaRecibida = recibeFecha.getString("enviarHorasDisfrutadas");
             horaArt54Recibida = recibeFecha.getString("enviarHorasArt54");
         }
+
+        TextView fecha = (TextView) findViewById(R.id.tvFechaActuarHoras);
+
+        fecha.setText(diaRecibido+" de "+mesRecibido+" de "+anioRecibido);
+
+
 
         guardarRecuperada=horaRecuperadaRecibida;
         guardarDisfrutada=horaDisfrutadaRecibida;
@@ -88,41 +105,47 @@ public class ActualizarHoras extends ActionBarActivity implements View.OnClickLi
             gestor.actualizaDia(cv, fechaRecibida);
             gestor.close();
 
-            if (hRecuperadas.equals("")) {
+            if (hRecuperadas.equals("") | hRecuperadas.equals(".")) {
                 hRecuperadas = "0";
             }
-            if (hDisfrutadas.equals("")) {
+            if (hDisfrutadas.equals("") | hDisfrutadas.equals(".")) {
                 hDisfrutadas = "0";
             }
-            if (hArt54.equals("")) {
+            if (hArt54.equals("") | hArt54.equals(".")) {
                 hArt54 = "0";
             }
 
             Double dHRecuperadas = Double.parseDouble(hRecuperadas);
             Double dHGuardarRec = Double.parseDouble(guardarRecuperada);
-            Double dHDisfrutada = Double.parseDouble(hDisfrutadas);
-            Double dHGuardarDisf = Double.parseDouble(guardarDisfrutada);
+
 
             if(dHRecuperadas>dHGuardarRec)
             {
                 dHRecuperadas=dHRecuperadas-dHGuardarRec;
+                sumaRec=true;
             }
             else if(dHRecuperadas<dHGuardarRec
                     ){
                 dHRecuperadas=dHGuardarRec-dHRecuperadas;
+                sumaRec=false;
             }
             else
             {
                 dHRecuperadas=0.0;
             }
 
+            Double dHDisfrutada = Double.parseDouble(hDisfrutadas);
+            Double dHGuardarDisf = Double.parseDouble(guardarDisfrutada);
+
             if(dHDisfrutada>dHGuardarDisf)
             {
                 dHDisfrutada=dHDisfrutada-dHGuardarDisf;
+                sumaDis=true;
             }
             else if(dHDisfrutada<dHGuardarDisf)
             {
                 dHDisfrutada=dHGuardarDisf-dHDisfrutada;
+                sumaDis=false;
             }
             else
             {
@@ -134,7 +157,21 @@ public class ActualizarHoras extends ActionBarActivity implements View.OnClickLi
 
             Double doubleAcumuladas=Double.parseDouble(prefs.getString("horasRecuperadasDisfrutadas", "0"));
 
-            Double operacionHoras = doubleAcumuladas+(dHRecuperadas-dHDisfrutada);
+            Double operacionHoras;
+
+            if(sumaRec){
+                operacionHoras = doubleAcumuladas+dHRecuperadas;
+            }else{
+                operacionHoras = doubleAcumuladas-dHRecuperadas;
+            }
+
+            if(sumaDis){
+                operacionHoras = operacionHoras-dHDisfrutada;
+            }else{
+                operacionHoras = operacionHoras+dHDisfrutada;
+            }
+
+            //operacionHoras = doubleAcumuladas+(dHRecuperadas-dHDisfrutada);
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("horasRecuperadasDisfrutadas", Double.toString(operacionHoras));

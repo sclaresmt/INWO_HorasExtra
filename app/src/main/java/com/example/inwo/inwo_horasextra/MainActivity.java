@@ -306,6 +306,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intentHoras = new Intent(contexto, ActualizarHoras.class);
                 intentHoras.putExtra("enviarFecha", arLiDiaList.get(position).getIdDia());
+                intentHoras.putExtra("enviarDia", arLiDiaList.get(position).getDiaMes());
+                intentHoras.putExtra("enviarMes", strMes);
+                intentHoras.putExtra("enviarAnio", Integer.toString(anio));
                 intentHoras.putExtra("enviarHorasRecuperadas", arLiDiaList.get(position).getHoraNormal());
                 intentHoras.putExtra("enviarHorasDisfrutadas", arLiDiaList.get(position).getHoraExtra());
                 intentHoras.putExtra("enviarHorasArt54", arLiDiaList.get(position).getHoraArt54());
@@ -370,7 +373,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         String sAcumuladas = etAcumuladas.getText().toString();
 
                         editor = prefs.edit();
-                        if (sAcumuladas.equals("")) {
+                        if (sAcumuladas.equals("") | sAcumuladas.equals("-") | sAcumuladas.equals(".")) {
                             sAcumuladas = "0";
                         } else {
                             editor.putString("horasAcumuladas", sAcumuladas);
