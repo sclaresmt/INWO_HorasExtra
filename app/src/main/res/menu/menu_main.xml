@@ -20,6 +20,9 @@
             <item android:id="@+id/cambiar_codigo_action_bar"
                 app:showAsAction="always"
                 android:title="Código Usuario" />
+            <item android:id="@+id/cerrar_sesion_action_bar"
+                app:showAsAction="always"
+                android:title="Cerrar Sesión" />
         </menu>
 
     </item>

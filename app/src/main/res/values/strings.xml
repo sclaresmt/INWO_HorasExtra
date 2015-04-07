@@ -43,4 +43,8 @@
     <string name="sabado">S</string>
     <string name="domingo">D</string>
 
+    <string name="cerrar_sesion">¿Desea cerrar la sesión?</string>
+
+
+
 </resources>

@@ -79,6 +79,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mes=calendario3.get(Calendar.MONTH);
         acumuladoMes=0;
         anio=calendario3.get(Calendar.YEAR);
+
+        calendario.set(anio, Calendar.JANUARY, 1);
+        calendario2.set(anio, Calendar.JANUARY, 1);
+        guardarAnio();
+        calendario.set(anio+1, Calendar.JANUARY, 1);
+        calendario2.set(anio+1, Calendar.JANUARY, 1);
         guardarAnio();
 
         prefs = getSharedPreferences("PreferenciasHorasExtra", this.MODE_PRIVATE);
@@ -122,6 +128,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if(id==R.id.cambiar_codigo_action_bar){
             Intent i = new Intent(this, CodigoUsuario.class);
             startActivity(i);
+        }
+        if(id==R.id.cerrar_sesion_action_bar){
+            dialogoCerrarSesion();
         }
 
         return super.onOptionsItemSelected(item);
@@ -245,6 +254,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         tvHora3.setText(((Dia) entrada).getHoraArt54());
 
 //                    tvDiaNum.setTextSize(tamanioFuente);
+                    Log.d("log1", "esVacaciones: "+((Dia) entrada).getIdDia()+" "+((Dia) entrada).getEsVacaciones());
 
                     // color de las filas
                     if(((Dia) entrada).getDiaSemana().equals("D"))
@@ -395,6 +405,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         alertDialog.show();
     }
 
+    public void dialogoCerrarSesion(){
+        //Se infla con el xml referente al dialog
+        LayoutInflater li = LayoutInflater.from(this);
+        final View prompt = li.inflate(R.layout.dialog_cerrar_sesion, null);
+
+        //Instanciamos el dialog.
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(prompt);
+
+        // Mostramos el mensaje del cuadro de dialogo
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Cancelamos el cuadro de dialogo
+                        dialog.cancel();
+                    }
+                });
+
+        // Creamos un AlertDialog y lo mostramos
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @Override
     public void onClick(View v) {
         if(v==btnMesAnterior){
@@ -419,11 +458,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void guardarAnio(){
 
         GestorBD gestor = GestorBD.getInstancia(this.contexto);
-        calendario.set(anio, Calendar.JANUARY, 1);
+        //calendario.set(anio, Calendar.JANUARY, 1);
 
         //Obtiene el total de dias de ese año.
         int totalDiasAnio=0;
-        calendario2.set(anio, Calendar.JANUARY, 1);
+        //calendario2.set(anio, Calendar.JANUARY, 1);
         for(int d = 0; d<12; d++){
             calendario2.add(Calendar.MONTH, d);
             totalDiasAnio=totalDiasAnio+calendario2.getActualMaximum(Calendar.DAY_OF_MONTH);
