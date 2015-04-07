@@ -130,6 +130,10 @@ public class ManejadorConexion {
                         actualizarDias(resp);
                         codRespuesta = 5;
                         break;
+
+                    case "Error: Usuario en uso.":
+                        codRespuesta = 7;
+                        break;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -607,6 +607,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 case 6:
                     mensaje = "Conexión deficiente o nula. Por favor, compruebe su conexión o inténtelo más tarde.";
                     break;
+                case 7:
+                    mensaje = "Ese usuario ya está en uso.";
+                    break;
             }
 
             return codResultado;
