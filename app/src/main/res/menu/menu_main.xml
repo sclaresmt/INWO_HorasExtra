@@ -1,8 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
 
     <item android:id="@+id/calendario_action_bar"
         android:icon="@drawable/calendario_icon"
@@ -17,9 +15,6 @@
             <item android:id="@+id/hAcumuladas_action_bar"
                 app:showAsAction="always"
                 android:title="H.Acumuladas" />
-            <item android:id="@+id/cambiar_codigo_action_bar"
-                app:showAsAction="always"
-                android:title="Código Usuario" />
             <item android:id="@+id/cerrar_sesion_action_bar"
                 app:showAsAction="always"
                 android:title="Cerrar Sesión" />

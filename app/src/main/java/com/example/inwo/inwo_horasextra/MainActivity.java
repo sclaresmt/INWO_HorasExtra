@@ -125,10 +125,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if(id==R.id.hAcumuladas_action_bar){
             dialogoHorasAcumuladas();
         }
-        if(id==R.id.cambiar_codigo_action_bar){
-            Intent i = new Intent(this, CodigoUsuario.class);
-            startActivity(i);
-        }
         if(id==R.id.cerrar_sesion_action_bar){
             dialogoCerrarSesion();
         }
