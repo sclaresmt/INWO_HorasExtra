@@ -627,7 +627,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (pDialog.isShowing()) {
                 pDialog.dismiss();
             }
-            if(result==0||result==1||result==2||result==6){
+            if(result==0||result==1||result==2||result==6||result==7){
                 Intent intent = new Intent(MainActivity.this, CodigoUsuario.class);
                 intent.putExtra("mensaje", mensaje);
                 startActivityForResult(intent, 1);
