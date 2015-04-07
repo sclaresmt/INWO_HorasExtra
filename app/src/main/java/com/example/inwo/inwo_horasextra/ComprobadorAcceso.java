@@ -2,6 +2,7 @@ package com.example.inwo.inwo_horasextra;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -23,7 +24,7 @@ public class ComprobadorAcceso {
     private SharedPreferences preferencias;
     private SharedPreferences.Editor editor;
     Calendar cal;
-    String fechaActual;
+    String fechaActual, diaAnyioActual;
 
     public ComprobadorAcceso(Context contexto){
         this.context = contexto;
@@ -36,21 +37,23 @@ public class ComprobadorAcceso {
      */
     public int comprobarUltimaConexion(){
 
-        //Cogemos la fecha actual en formato americano para que al restarla tenga sentido.
-        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+        //Cogemos la fecha actual en formato día del año para que al restarla tenga sentido.
+        DateFormat dfDias = new SimpleDateFormat("D");
         cal = Calendar.getInstance();
-        fechaActual = df.format(cal.getTime());
+        diaAnyioActual = dfDias.format(cal.getTime());
+
         int diasPasados = -1;
         int resultado = 0;
         //Si ya se había conectado antes, comprueba el número de días desde la última conexión.
         if(this.preferencias.getString("ultimaConexion", "inexistente").equals("inexistente")==false) {
-            diasPasados = parseInt(fechaActual) - parseInt(this.preferencias.getString("ultimaConexion", "inexistente"));
+            diasPasados = parseInt(diaAnyioActual) - parseInt(this.preferencias.getString("ultimaConexion", "inexistente"));
         }
-//        Log.d("log1", "Ultima conexión: " + this.preferencias.getString("ultimaConexion", "inexistente"));
-//        Log.d("log1", "Fecha actual: "+ fechaActual);
+        Log.d("Fechas", "Ultima conexión: " + this.preferencias.getString("ultimaConexion", "inexistente"));
+        Log.d("Fechas", "Fecha día del año: "+ diaAnyioActual);
+        Log.d("Fechas", "Días pasados: "+ diasPasados);
 
         //Si los días pasados desde la última son más de 7 comprueba el acceso.
-        if(diasPasados>7||diasPasados==-1){
+        if(diasPasados>7||diasPasados<0){
             if(this.preferencias.getString("usuario", "inexistente").equals("inexistente")&&
                     this.preferencias.getString("pass", "inexistente").equals("inexistente")){
                 resultado = 0;
@@ -68,6 +71,11 @@ public class ComprobadorAcceso {
      */
     public int comprobarAcceso(String usuario, String pass){
 
+        //Formateamos la fecha de hoy para sacar el año.
+        DateFormat dfNormal = new SimpleDateFormat("yyyyMMdd");
+        fechaActual = dfNormal.format(cal.getTime());
+        Log.d("Fechas", "Fecha actual: "+ fechaActual);
+
         List<NameValuePair> parametros = new ArrayList<>();
 
         parametros.add(new BasicNameValuePair("accion", "loginUsuario"));
@@ -82,7 +90,7 @@ public class ComprobadorAcceso {
 
         if(codRespuesta==4||codRespuesta==5){
             //Guarda la fecha de hoy como la fecha de última conexión en las preferencias.
-            this.editor.putString("ultimaConexion", fechaActual);
+            this.editor.putString("ultimaConexion", diaAnyioActual);
             this.editor.commit();
         }
 
