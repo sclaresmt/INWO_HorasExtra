@@ -2,6 +2,7 @@ package com.example.inwo.inwo_horasextra;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
@@ -76,6 +77,9 @@ public class ComprobadorAcceso {
         fechaActual = dfNormal.format(cal.getTime());
         Log.d("Fechas", "Fecha actual: "+ fechaActual);
 
+        //Guardamos la id del dispositivo
+        String android_id = Settings.Secure.getString(this.context.getContentResolver(),Settings.Secure.ANDROID_ID);
+
         List<NameValuePair> parametros = new ArrayList<>();
 
         parametros.add(new BasicNameValuePair("accion", "loginUsuario"));
@@ -83,6 +87,7 @@ public class ComprobadorAcceso {
         parametros.add(new BasicNameValuePair("pass", pass));
         parametros.add(new BasicNameValuePair("año", fechaActual.substring(0, 4)));
         parametros.add(new BasicNameValuePair("version", this.preferencias.getString("version", "inexistente")));
+        parametros.add(new BasicNameValuePair("idDispositivo", android_id));
 
         ManejadorConexion actualizador = new ManejadorConexion(this.context);
         String datos = actualizador.llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.GET, parametros);
