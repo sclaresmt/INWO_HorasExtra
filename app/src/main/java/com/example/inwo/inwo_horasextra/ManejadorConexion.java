@@ -19,6 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManejadorConexion {
@@ -106,9 +108,9 @@ public class ManejadorConexion {
     }
 
     public int comprobarRespuesta(String resp){
-        Log.d("Respuesta HTTP: ", resp);
+        //Log.d("Respuesta HTTP: ", resp);
         String descripcion = "null";
-        int codRespuesta = 0;
+        int codRespuesta = 6;
         if(respuesta!="null"){
             try {
                 JSONObject obj = new JSONObject(resp);
@@ -185,5 +187,21 @@ public class ManejadorConexion {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String cerrarSesion(String user){
+
+        List<NameValuePair> parametros = new ArrayList<>();
+        parametros.add(new BasicNameValuePair("listar", "limpiar"));
+        parametros.add(new BasicNameValuePair("usuario", user));
+        String respuesta = llamadaServicioWeb("http://inwo.esy.es/api.php", ManejadorConexion.POST, parametros);
+        String mensaje = "Error de conexión. Inténtelo más tarde.";
+        Log.d("Sesion: ", respuesta);
+
+        if(respuesta!="null"){
+            mensaje = "Sesión cerrada.";
+        }
+
+        return mensaje;
     }
 }

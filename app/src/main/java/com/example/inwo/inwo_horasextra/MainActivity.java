@@ -415,7 +415,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 .setCancelable(false)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        ManejadorConexion conexion = new ManejadorConexion(contexto);
+                        String resp = conexion.cerrarSesion(prefs.getString("usuario", "inexistente"));
+                        if(resp.equals("Sesión cerrada.")){
+                            editor.putString("ultimaConexion", "inexistente");
+                            editor.commit();
+                            Toast.makeText(contexto, resp, Toast.LENGTH_LONG).show();
+                            finish();
+                        }else{
+                            Toast.makeText(contexto, resp, Toast.LENGTH_LONG).show();
+                        }
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

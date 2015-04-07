@@ -49,9 +49,9 @@ public class ComprobadorAcceso {
         if(this.preferencias.getString("ultimaConexion", "inexistente").equals("inexistente")==false) {
             diasPasados = parseInt(diaAnyioActual) - parseInt(this.preferencias.getString("ultimaConexion", "inexistente"));
         }
-        Log.d("Fechas", "Ultima conexión: " + this.preferencias.getString("ultimaConexion", "inexistente"));
-        Log.d("Fechas", "Fecha día del año: "+ diaAnyioActual);
-        Log.d("Fechas", "Días pasados: "+ diasPasados);
+//        Log.d("Fechas", "Ultima conexión: " + this.preferencias.getString("ultimaConexion", "inexistente"));
+//        Log.d("Fechas", "Fecha día del año: "+ diaAnyioActual);
+//        Log.d("Fechas", "Días pasados: "+ diasPasados);
 
         //Si los días pasados desde la última son más de 7 comprueba el acceso.
         if(diasPasados>7||diasPasados<0){
